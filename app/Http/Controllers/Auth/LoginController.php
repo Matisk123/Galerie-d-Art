@@ -110,11 +110,11 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
         if ($user->hasRole('super_admin')) {
-            return redirect('/super-admin');
+            return redirect('/home');
         }
 
         if ($user->hasRole('admin')) {
-            return redirect('/admin');
+            return redirect('/home');
         }
 
         return redirect('/menu');
@@ -129,7 +129,7 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->route('login');
     }
 
     /**

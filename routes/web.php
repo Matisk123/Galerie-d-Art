@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\HomeController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -25,3 +26,5 @@ Route::middleware(['auth','role:admin'])->group(function(){
 Route::middleware(['auth'])->group(function(){
     Route::get('/menu', [MenuController::class,'index']);
 });
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');
