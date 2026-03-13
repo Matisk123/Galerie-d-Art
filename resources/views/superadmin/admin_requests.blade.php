@@ -97,15 +97,15 @@
 
                     </div>
 
-                    <a href="{{ route('super-admin.admin-requests.archive') }}" class="btn btn-secondary archive-button">
-                        Voir les archives
-                    </a>
+
 
                 @endforeach
 
             </div>
 
         @endif
-
+        <a href="{{ route('super-admin.admin-requests.archive') }}" class="btn btn-secondary archive-button">
+            Voir les archives
+        </a>
     </div>
 @endsection
