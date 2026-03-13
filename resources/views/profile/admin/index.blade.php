@@ -11,8 +11,11 @@
                     <ul>
                         <li><a href="/profile">Informations</a></li>
                         <li><a href="/profile/security">Sécurité</a></li>
-                        <li><a href="/profile/favorites">Favoris</a></li>
-                        <hr>
+                        <li>
+                            <a href="/profile/informations">
+                                Informations personnelles
+                            </a>
+                        </li>                         <hr>
                         <li><a href="/admin/oeuvres">Gestion des œuvres</a></li>
                         <li><a href="/admin/statistiques">Statistiques des œuvres</a></li>
                         <li><a href="/admin/expositions">Gestion des expositions</a></li>

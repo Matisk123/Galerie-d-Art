@@ -45,3 +45,7 @@ Route::middleware(['auth','role:super_admin'])->group(function(){
     Route::get('/super-admin/admin-requests/archive', [SuperAdminController::class, 'archivedRequests'])
         ->name('super-admin.admin-requests.archive');
 });
+
+Route::get('/profile/informations', [ProfileController::class,'informationPage'])->name('profile.info');
+
+Route::post('/profile/informations', [ProfileController::class,'saveInformation'])->name('profile.info.save');

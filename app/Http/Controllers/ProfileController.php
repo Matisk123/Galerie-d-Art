@@ -75,4 +75,50 @@ class ProfileController extends Controller
 
         return back()->with('success','Profil mis à jour');
     }
+
+    public function informationPage()
+    {
+        $user = Auth::user();
+
+        $info = $user->info;
+
+        return view('profile.informations', compact('user','info'));
+
+    }
+
+    public function saveInformation(Request $request)
+    {
+
+        $request->validate([
+            'birth_date' => 'required|date',
+            'phone' => 'required',
+            'country' => 'required',
+            'language' => 'required',
+            'currency' => 'required'
+        ]);
+
+        $user = Auth::user();
+
+        $user->info()->updateOrCreate(
+
+            ['user_id'=>$user->id],
+
+            [
+                'birth_date'=>$request->birth_date,
+                'phone'=>$request->phone,
+                'country'=>$request->country,
+                'language'=>$request->language,
+                'currency'=>$request->currency,
+                'address'=>$request->address,
+                'city'=>$request->city,
+                'postal_code'=>$request->postal_code,
+                'iban'=>$request->iban,
+                'bic'=>$request->bic
+            ]
+
+        );
+
+        return back()->with('success','Informations enregistrées');
+
+    }
 }

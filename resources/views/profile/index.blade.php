@@ -9,7 +9,11 @@
                 <div class="card profile-card p-3">
                     <h5 class="section-title mb-3">Mon compte</h5>
                     <ul class="profile-menu list-unstyled">
-                        <li><a href="/profile">Informations</a></li>
+                        <li>
+                            <a href="/profile/informations">
+                                Informations personnelles
+                            </a>
+                        </li>
                         <li><a href="/profile/security">Sécurité</a></li>
                         <li><a href="/profile/favorites">Favoris</a></li>
 

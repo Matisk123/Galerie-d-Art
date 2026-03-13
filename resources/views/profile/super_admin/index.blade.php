@@ -7,30 +7,17 @@
             {{-- MENU SUPER ADMIN --}}
             <div class="col-md-3">
                 <div class="card p-3">
-
                     <h5>Mon compte</h5>
-
                     <ul class="list-unstyled">
-
                         <li>
-                            <a href="/profile">Informations</a>
-                        </li>
-
-                        <li>
-                            <a href="/profile/security">Sécurité</a>
-                        </li>
-
-                        <li>
-                            <a href="/profile/favorites">Favoris</a>
-                        </li>
-
-                        <hr>
-
-                        <li>
-                            <a href="/super-admin/users">
-                                Gestion utilisateurs
+                            <a href="/profile/informations">
+                                Informations personnelles
                             </a>
                         </li>
+                        <li><a href="/profile/security">Sécurité</a></li>
+                        <li><a href="/profile/favorites">Favoris</a></li>
+                        <hr>
+                        <li><a href="/super-admin/users">Gestion utilisateurs</a></li>
 
                         <li>
                             <a href="/super-admin/admin-requests">
