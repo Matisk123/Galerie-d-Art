@@ -35,3 +35,10 @@ a {
 a:hover {
     text-decoration: underline;
 }
+
+.admin-message-box{
+    padding:15px;
+    border-radius:8px;
+    border:1px solid var(--bs-border-color);
+    background-color: var(--bs-secondary-bg);
+}

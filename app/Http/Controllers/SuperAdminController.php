@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\AdminRequest;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Notification;
 
 class SuperAdminController extends Controller
 {
@@ -17,13 +18,19 @@ class SuperAdminController extends Controller
     // Dashboard Super Admin
     public function dashboard()
     {
-        return view('superadmin.dashboard');
+        $pendingRequests = AdminRequest::where('status','pending')->count();
+
+        return view('superadmin.dashboard', compact('pendingRequests'));
     }
 
     // Liste toutes les demandes d'admin
     public function listRequests()
     {
-        $requests = AdminRequest::with('user')->orderBy('created_at','desc')->get();
+        $requests = AdminRequest::with('user')
+            ->where('status','pending')
+            ->orderBy('created_at','desc')
+            ->get();
+
         return view('superadmin.admin_requests', compact('requests'));
     }
 
@@ -36,7 +43,14 @@ class SuperAdminController extends Controller
 
         // Transformer le client en admin
         $adminRole = Role::where('name','admin')->first();
-        $request->user->roles()->attach($adminRole);
+        $request->user->roles()->syncWithoutDetaching([$adminRole->id]);
+
+        Notification::create([
+            'user_id' => $request->user_id,
+            'type' => 'admin_request_accepted',
+            'read' => false
+        ]);
+
 
         return redirect()->back()->with('success','Demande acceptée et utilisateur promu admin.');
     }
@@ -47,6 +61,12 @@ class SuperAdminController extends Controller
         $request = AdminRequest::findOrFail($id);
         $request->status = 'refused';
         $request->save();
+
+        Notification::create([
+            'user_id' => $request->user_id,
+            'type' => 'admin_request_refused',
+            'read' => false
+        ]);
 
         return redirect()->back()->with('success','Demande refusée.');
     }
@@ -82,5 +102,15 @@ class SuperAdminController extends Controller
 
         $user->delete();
         return redirect()->back()->with('success','Utilisateur supprimé.');
+    }
+
+    public function archivedRequests()
+    {
+        $requests = AdminRequest::with('user')
+            ->whereIn('status',['accepted','refused'])
+            ->orderBy('created_at','desc')
+            ->get();
+
+        return view('superadmin.admin_requests_archive',compact('requests'));
     }
 }

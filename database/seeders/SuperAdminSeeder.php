@@ -23,6 +23,5 @@ class SuperAdminSeeder extends Seeder
 
         $role = Role::where('name','super_admin')->first();
 
-        $user->roles()->attach($role);
+        $user->roles()->sync([$role->id]);    }
     }
-}

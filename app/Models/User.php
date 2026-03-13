@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'profile_photo'
     ];
 
     /**
@@ -59,5 +60,10 @@ class User extends Authenticatable
     public function adminRequests()
     {
         return $this->hasMany(AdminRequest::class);
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(\App\Models\Notification::class);
     }
 }
