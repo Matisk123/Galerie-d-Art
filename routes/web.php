@@ -7,6 +7,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminRequestController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\UserManagementController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -49,3 +50,16 @@ Route::middleware(['auth','role:super_admin'])->group(function(){
 Route::get('/profile/informations', [ProfileController::class,'informationPage'])->name('profile.info');
 
 Route::post('/profile/informations', [ProfileController::class,'saveInformation'])->name('profile.info.save');
+
+Route::middleware(['auth','role:super_admin'])->prefix('admin')->group(function(){
+
+    Route::get('/users', [UserManagementController::class,'index'])
+        ->name('admin.users');
+
+    Route::post('/users/{user}/role', [UserManagementController::class,'updateRole'])
+        ->name('admin.users.role');
+
+    Route::delete('/users/{user}', [UserManagementController::class,'destroy'])
+        ->name('admin.users.delete');
+
+});

@@ -556,3 +556,252 @@ body.dark-mode .profile-main-info h2{
     border-radius: 8px;
     font-weight: 500;
 }
+
+/* ==========================
+   USERS TABLE
+========================== */
+
+.table{
+    vertical-align: middle;
+    margin-bottom: 0;
+}
+
+/* HEADER */
+
+.table thead{
+    background:#f8f9fa;
+}
+
+.table thead th{
+    border:none;
+    font-weight:600;
+    color:#333;
+    padding:18px 15px;
+    font-size:14px;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+}
+
+/* BODY */
+
+.table tbody tr{
+    transition:0.2s;
+}
+
+.table tbody tr:hover{
+    background:#f5f7fb;
+}
+
+.table td{
+    padding:15px;
+    border-color:#f1f1f1;
+    vertical-align:middle;
+    color:#444;
+}
+
+/* PHOTO */
+
+.user-photo{
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    object-fit:cover;
+    border:2px solid #f1f1f1;
+}
+
+/* BADGES */
+
+.badge{
+    padding:8px 12px;
+    border-radius:8px;
+    font-weight:600;
+    font-size:12px;
+}
+
+/* SELECT */
+
+.table select.form-control{
+    min-width:130px;
+}
+
+/* BUTTONS */
+
+.table .btn{
+    border-radius:8px;
+    font-size:14px;
+    font-weight:500;
+}
+
+/* RESPONSIVE */
+
+.table-responsive{
+    overflow-x:auto;
+    border-radius:12px;
+}
+
+.profile-card{
+    width:100%;
+    margin:0;
+}
+
+.users-content{
+    padding: 40px;
+    min-height: 100vh;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/* ==========================
+   DARK MODE TABLE (FIX)
+========================== */
+
+/* CARD */
+body.dark-mode .profile-card{
+    background:#1e1e1e !important;
+    color:#e4e4e4;
+    border:1px solid #2f2f2f;
+}
+
+/* enlève le fond blanc bootstrap */
+body.dark-mode .card{
+    background:#1e1e1e !important;
+}
+
+/* TABLE CONTAINER */
+body.dark-mode .table-responsive{
+    background:#1e1e1e !important;
+    border-radius:12px;
+}
+
+/* TABLE */
+body.dark-mode .table{
+    background:#1e1e1e !important;
+    color:#e4e4e4;
+    margin-bottom:0;
+}
+
+/* bootstrap ajoute parfois du blanc ici */
+body.dark-mode .table > :not(caption) > * > *{
+    background:#1e1e1e !important;
+    color:#e4e4e4 !important;
+    border-color:#2f2f2f;
+}
+
+/* HEADER */
+body.dark-mode .table thead{
+    background:#252525 !important;
+}
+
+body.dark-mode .table thead th{
+    background:#252525 !important;
+    color:#ffffff;
+    border-color:#333;
+}
+
+/* ROWS */
+body.dark-mode .table tbody tr{
+    background:#2f2f2f !important;
+}
+
+body.dark-mode .table tbody tr:hover{
+    background:#2a2a2a !important;
+}
+
+/* CELLS */
+body.dark-mode .table td{
+    color:#e4e4e4;
+    border-color:#2f2f2f;
+}
+
+/* SELECT */
+body.dark-mode select.form-control{
+    background:#2a2a2a !important;
+    color:#fff !important;
+    border:1px solid #444;
+}
+
+/* OPTIONS */
+body.dark-mode select.form-control option{
+    background:#2a2a2a;
+    color:#fff;
+}
+
+/* BUTTONS */
+body.dark-mode .btn-primary{
+    background:#3a7bfd;
+    border:none;
+}
+
+body.dark-mode .btn-danger{
+    background:#dc3545;
+    border:none;
+}
+
+/* TEXT MUTED */
+body.dark-mode .text-muted{
+    color:#bdbdbd !important;
+}
+
+/* ==========================
+   TABLE BORDERS IMPROVED
+========================== */
+
+/* contour principal du tableau */
+body.dark-mode .table-responsive{
+    border:1px solid #353535;
+}
+
+/* header plus visible */
+body.dark-mode .table thead th{
+    background:#2c2c2c !important;
+    border-bottom:1px solid #3d3d3d !important;
+}
+
+/* lignes users même couleur que header */
+body.dark-mode .table tbody tr{
+    background:#2c2c2c !important;
+}
+
+/* séparation entre les users */
+body.dark-mode .table tbody tr + tr td{
+    border-top:1px solid #3d3d3d !important;
+}
+
+/* hover */
+body.dark-mode .table tbody tr:hover{
+    background:#353535 !important;
+}
+
+/* bordure extérieure du tableau */
+body.dark-mode .table{
+    border:1px solid #353535;
+    border-radius:12px;
+    overflow:hidden;
+}
+
+/* ==========================
+   REMOVE SCROLLBARS
+========================== */
+
+/* retire scroll horizontal */
+html,
+body{
+    overflow-x:hidden;
+}
+
+/* retire scroll vertical */
+body{
+    overflow-y:hidden;
+}
+
+/* retire les barres visibles */
+::-webkit-scrollbar{
+    width:0;
+    height:0;
+    display:none;
+}
+
+/* Firefox */
+*{
+    scrollbar-width:none;
+}

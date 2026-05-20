@@ -17,8 +17,11 @@
                         <li><a href="/profile/security">Sécurité</a></li>
                         <li><a href="/profile/favorites">Favoris</a></li>
                         <hr>
-                        <li><a href="/super-admin/users">Gestion utilisateurs</a></li>
-
+                        <li>
+                            <a href="{{ route('admin.users') }}">
+                                Gestion des utilisateurs
+                            </a>
+                        </li>
                         <li>
                             <a href="/super-admin/admin-requests">
                                 Demandes Admin

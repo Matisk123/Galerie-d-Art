@@ -48,7 +48,11 @@
                         @endif
 
                         @if(Auth::user()->hasRole('super_admin'))
-                            <li><a href="/super-admin/users">Gestion utilisateurs</a></li>
+                            <li>
+                                <a href="{{ route('admin.users') }}">
+                                    Gestion des utilisateurs
+                                </a>
+                            </li>
                             <li><a href="/super-admin/admin-requests">Demandes Admin</a></li>
                             <li><a href="/super-admin/statistiques">Statistiques plateforme</a></li>
                             <hr>
