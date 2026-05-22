@@ -16,7 +16,6 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::middleware(['auth','role:super_admin'])->group(function(){
-    Route::get('/super-admin', [SuperAdminController::class,'dashboard']);
     Route::get('/super-admin/admin-requests', [SuperAdminController::class,'listRequests']);
     Route::post('/super-admin/admin-requests/{id}/accept', [SuperAdminController::class,'acceptRequest']);
     Route::post('/super-admin/admin-requests/{id}/refuse', [SuperAdminController::class,'refuseRequest']);
@@ -62,4 +61,8 @@ Route::middleware(['auth','role:super_admin'])->prefix('admin')->group(function(
     Route::delete('/users/{user}', [UserManagementController::class,'destroy'])
         ->name('admin.users.delete');
 
+});
+
+Route::get('/artistes', function () {
+    return view('artistes.index');
 });
