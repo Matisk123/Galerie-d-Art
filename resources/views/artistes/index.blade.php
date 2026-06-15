@@ -128,9 +128,9 @@
 
                         <div class="artist-right">
 
-                            @for($x = 1; $x <= 5; $x++)
+                            @for($x = 1; $x <= 3; $x++)
 
-                                <div class="artist-work-card">
+                                <div class="artist-work-card bordered-work">
 
                                     <img src="https://picsum.photos/400/400?random={{ $i + $x }}"
                                          class="artist-work-preview">
@@ -147,8 +147,16 @@
                                         Peinture • 80 x 60 cm
                                     </div>
 
-                                    <div class="artist-work-price">
-                                        {{ rand(1200, 9500) }} €
+                                    <div class="art-footer">
+
+                                        <div class="art-price">
+                                            {{ rand(1200,9500) }} €
+                                        </div>
+
+                                        <button class="like-btn">
+                                            <i class="bi bi-heart"></i>
+                                        </button>
+
                                     </div>
 
                                 </div>

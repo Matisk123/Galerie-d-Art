@@ -9,7 +9,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 
@@ -158,6 +158,32 @@
             document.body.classList.remove("dark-mode");
             localStorage.setItem("theme","light");
         }
+
+    });
+
+</script>
+
+<script>
+
+    document.querySelectorAll('.like-btn').forEach(button => {
+
+        button.addEventListener('click', function(e){
+
+            e.preventDefault();
+
+            this.classList.toggle('active');
+
+            const icon = this.querySelector('i');
+
+            if(this.classList.contains('active')){
+                icon.classList.remove('bi-heart');
+                icon.classList.add('bi-heart-fill');
+            }else{
+                icon.classList.remove('bi-heart-fill');
+                icon.classList.add('bi-heart');
+            }
+
+        });
 
     });
 

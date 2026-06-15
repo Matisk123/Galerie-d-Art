@@ -1204,19 +1204,51 @@ body.dark-mode .hero-section{
 
 /* WORK CARD */
 
+/* ==========================
+   OEUVRE D'ARTISTE
+========================== */
+
 .artist-work-card{
-    width:150px;
+    min-width:220px;
     flex-shrink:0;
+
+    background:white;
+
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+
+    padding:12px;
+
+    overflow:hidden;
+
+    transition:0.2s;
+}
+
+.artist-work-card:hover{
+    transform:translateY(-4px);
+    border-color:#0d6efd;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+}
+
+/* CONTENEUR IMAGE */
+
+.artist-work-preview{
+    width:100%;
+    height:180px;
+    display:block;
+    object-fit:cover;
+    border-radius:12px;
+    margin-bottom:12px;
+}
+
+
+.artist-work-card{
+    background:white;
+    border:1px solid #e5e7eb;
 }
 
 .artist-work-preview{
-    width:150px;
-    height:120px;
-
-    object-fit:cover;
-    border-radius:12px;
-
-    margin-bottom:10px;
+    border:1px solid #edf2f7;
 }
 
 /* TEXT */
@@ -1264,4 +1296,1017 @@ body.dark-mode .hero-section{
         height:160px;
     }
 
+}
+
+body.dark-mode .artist-work-card{
+    background:#252525;
+    border-color:#3a3a3a;
+}
+
+body.dark-mode .artist-work-card:hover{
+    border-color:#60a5fa;
+}
+
+/* ==========================
+   RESPONSIVE - ARTISTES
+========================== */
+
+@media (max-width: 1200px) {
+
+    /* Passe la carte artiste en vertical */
+    .artist-line-card{
+        flex-direction: column;
+    }
+
+    .artist-left{
+        width: 100%;
+    }
+
+    .artist-content{
+        width: 100%;
+    }
+
+    .artist-top-bar{
+        justify-content: flex-start;
+    }
+
+}
+
+/* Tablettes */
+@media (max-width: 992px){
+
+    .artist-line-card{
+        padding: 22px;
+        gap: 25px;
+    }
+
+    .artist-header{
+        gap: 15px;
+    }
+
+    .artist-avatar-large{
+        width: 80px;
+        height: 80px;
+    }
+
+    .artist-name-block h3{
+        font-size: 30px;
+    }
+
+    .artist-speciality{
+        font-size: 15px;
+    }
+
+    .artist-follow-btn{
+        width: 100%;
+    }
+
+    .artist-work-card{
+        min-width: 180px;
+    }
+
+    .artist-work-preview{
+        width: 100%;
+        height: 180px;
+    }
+
+}
+
+/* Mobile */
+@media (max-width: 768px){
+
+    .artist-line-card{
+        padding: 18px;
+        border-radius: 20px;
+    }
+
+    .artist-header{
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .artist-name-block h3{
+        font-size: 28px;
+    }
+
+    .artist-speciality{
+        font-size: 14px;
+    }
+
+    .artist-follow-btn{
+        width: 100%;
+        justify-content: center;
+    }
+
+    .artist-top-bar{
+        margin-bottom: 15px;
+    }
+
+    .artist-all-link{
+        font-size: 15px;
+    }
+
+    .artist-right{
+        gap: 15px;
+        padding-bottom: 10px;
+
+        overflow-x: auto;
+        scroll-snap-type: x proximity;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .artist-right::-webkit-scrollbar{
+        height: 6px;
+    }
+
+    .artist-right::-webkit-scrollbar-thumb{
+        background: rgba(0,0,0,.2);
+        border-radius: 999px;
+    }
+
+    .artist-work-card{
+        min-width: 170px;
+        scroll-snap-align: start;
+    }
+
+    .artist-work-preview{
+        height: 170px;
+    }
+
+}
+
+/* Très petits écrans */
+@media (max-width: 480px){
+
+    .artists-hero{
+        padding: 35px 25px;
+        min-height: 250px;
+    }
+
+    .artists-hero-content h1{
+        font-size: 30px;
+    }
+
+    .artists-hero-content p{
+        font-size: 15px;
+    }
+
+    .artists-toolbar{
+        flex-direction: column;
+    }
+
+    .search-box,
+    .filter-box{
+        width: 100%;
+    }
+
+    .filter-box .form-control{
+        width: 100%;
+    }
+
+    .artist-avatar-large{
+        width: 70px;
+        height: 70px;
+    }
+
+    .artist-name-block h3{
+        font-size: 24px;
+    }
+
+    .artist-work-card{
+        min-width: 150px;
+    }
+
+    .artist-work-preview{
+        height: 150px;
+    }
+
+}
+
+
+/* ==========================
+   EXHIBITIONS PAGE
+========================== */
+
+.exhibitions-page{
+    max-width: 1400px;
+    margin: auto;
+}
+
+/* HERO */
+
+.exhibitions-hero{
+    position: relative;
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    padding: 50px;
+    min-height: 280px;
+
+    display: flex;
+    align-items: center;
+
+    margin-bottom: 30px;
+
+    background:
+        linear-gradient(
+            rgba(0,0,0,.55),
+            rgba(0,0,0,.55)
+        ),
+        url("https://images.unsplash.com/photo-1541961017774-22349e4a1262?q=80&w=2070");
+
+    background-size: cover;
+    background-position: center;
+}
+
+.exhibitions-hero-content{
+    max-width: 700px;
+    color: white;
+}
+
+.hero-badge{
+    display: inline-block;
+
+    padding: 8px 14px;
+    margin-bottom: 18px;
+
+    border-radius: 999px;
+
+    background: rgba(255,255,255,.15);
+
+    font-size: 14px;
+}
+
+.exhibitions-hero-content h1{
+    font-size: 46px;
+    font-weight: 700;
+
+    margin-bottom: 18px;
+}
+
+.exhibitions-hero-content p{
+    font-size: 17px;
+    line-height: 1.6;
+
+    opacity: .95;
+}
+
+/* SECTIONS */
+
+.section-header{
+    margin-bottom: 25px;
+}
+
+.section-header h2{
+    font-size: 28px;
+    font-weight: 700;
+}
+
+/* CARTES PRINCIPALES */
+
+.exhibition-card{
+    background: white;
+
+    border-radius: 20px;
+    overflow: hidden;
+
+    box-shadow: 0 4px 18px rgba(0,0,0,.05);
+
+    transition: .25s;
+
+    height: 100%;
+}
+
+.exhibition-card:hover{
+    transform: translateY(-5px);
+}
+
+.exhibition-image{
+    width: 100%;
+    height: 240px;
+
+    object-fit: cover;
+}
+
+.exhibition-content{
+    padding: 25px;
+}
+
+.exhibition-status{
+    display: inline-block;
+
+    padding: 6px 12px;
+    margin-bottom: 15px;
+
+    border-radius: 999px;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.exhibition-status.active{
+    background: rgba(25,135,84,.15);
+    color: #198754;
+}
+
+.exhibition-content h4{
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.exhibition-content p{
+    color: #666;
+    line-height: 1.6;
+}
+
+.exhibition-meta{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    margin-top: 20px;
+
+    color: #666;
+    font-size: 14px;
+}
+
+/* PROCHAINEMENT */
+
+.upcoming-exhibition{
+    display: flex;
+    gap: 20px;
+
+    background: white;
+
+    border-radius: 18px;
+    overflow: hidden;
+
+    box-shadow: 0 4px 18px rgba(0,0,0,.05);
+
+    transition: .25s;
+
+    height: 100%;
+}
+
+.upcoming-exhibition:hover{
+    transform: translateY(-4px);
+}
+
+.upcoming-image{
+    width: 220px;
+    height: 100%;
+
+    min-height: 220px;
+
+    object-fit: cover;
+
+    flex-shrink: 0;
+}
+
+.upcoming-content{
+    padding: 25px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.upcoming-date{
+    display: inline-block;
+
+    margin-bottom: 12px;
+
+    color: #0d6efd;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.upcoming-content h4{
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.upcoming-content p{
+    color: #666;
+
+    margin-bottom: 18px;
+}
+
+.upcoming-content a{
+    text-decoration: none;
+
+    font-weight: 600;
+
+    color: #0d6efd;
+}
+
+/* BANDEAU FINAL */
+
+.exhibition-banner-large{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+
+    padding: 45px 50px;
+
+    border-radius: 20px;
+
+    background: linear-gradient(
+        135deg,
+        #111827,
+        #1f2937
+    );
+
+    color: white;
+}
+
+.exhibition-label{
+    display: inline-block;
+
+    margin-bottom: 15px;
+
+    opacity: .8;
+
+    font-size: 14px;
+}
+
+.exhibition-banner-large h2{
+    margin-bottom: 15px;
+
+    font-size: 34px;
+    font-weight: 700;
+}
+
+.exhibition-banner-large p{
+    margin: 0;
+
+    opacity: .9;
+
+    max-width: 700px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 992px){
+
+    .exhibitions-hero{
+        min-height: 240px;
+        padding: 40px;
+    }
+
+    .exhibitions-hero-content h1{
+        font-size: 36px;
+    }
+
+    .upcoming-exhibition{
+        flex-direction: column;
+    }
+
+    .upcoming-image{
+        width: 100%;
+        height: 220px;
+    }
+
+    .exhibition-banner-large{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 768px){
+
+    .exhibitions-hero{
+        padding: 30px;
+        min-height: 220px;
+    }
+
+    .exhibitions-hero-content h1{
+        font-size: 30px;
+    }
+
+    .exhibitions-hero-content p{
+        font-size: 15px;
+    }
+
+    .exhibition-banner-large{
+        padding: 35px 30px;
+    }
+
+    .exhibition-banner-large h2{
+        font-size: 28px;
+    }
+}
+
+/* ==========================
+   DARK MODE EXHIBITIONS
+========================== */
+
+body.dark-mode .exhibition-card,
+body.dark-mode .upcoming-exhibition{
+    background: #1e1e1e;
+    color: #e4e4e4;
+
+    box-shadow: 0 4px 20px rgba(0,0,0,.4);
+}
+
+body.dark-mode .exhibition-card:hover,
+body.dark-mode .upcoming-exhibition:hover{
+    background: #252525;
+}
+
+body.dark-mode .exhibition-content p,
+body.dark-mode .exhibition-meta,
+body.dark-mode .upcoming-content p{
+    color: #bdbdbd;
+}
+
+body.dark-mode .upcoming-content a{
+    color: #60a5fa;
+}
+
+body.dark-mode .upcoming-date{
+    color: #60a5fa;
+}
+
+body.dark-mode .hero-badge{
+    background: rgba(255,255,255,.12);
+}
+
+body.dark-mode .exhibitions-hero{
+    box-shadow: 0 5px 30px rgba(0,0,0,.5);
+}
+
+body.dark-mode .exhibition-banner-large{
+    background: linear-gradient(
+        135deg,
+        #0f172a,
+        #1e293b
+    );
+}
+
+body.dark-mode .exhibition-status.active{
+    background: rgba(25,135,84,.2);
+    color: #4ade80;
+}
+
+
+
+
+
+
+
+
+
+/* ==========================
+   OEUVRES PAGE
+========================== */
+
+.oeuvres-page{
+    max-width: 1400px;
+    margin: auto;
+}
+
+/* HERO */
+
+.oeuvres-hero{
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+
+    padding: 45px 50px;
+    min-height: 240px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    margin-bottom: 25px;
+
+    background:
+        linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)),
+        url("https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=2070");
+
+    background-size: cover;
+    background-position: center;
+}
+
+.oeuvres-hero h1{
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: white;
+}
+
+.oeuvres-hero p{
+    font-size: 16px;
+    max-width: 650px;
+    margin: 0;
+    color: rgba(255,255,255,.9);
+}
+
+.badge-oeuvres{
+    display: inline-block;
+    width: fit-content;
+
+    padding: 7px 14px;
+    margin-bottom: 15px;
+
+    border-radius: 999px;
+
+    background: rgba(255,255,255,.15);
+    color: white;
+}
+
+/* CATEGORIES */
+
+.oeuvres-categories{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    margin-bottom: 25px;
+}
+
+.category-card{
+    padding: 10px 18px;
+
+    border-radius: 999px;
+
+    background: white;
+    box-shadow: 0 3px 12px rgba(0,0,0,.06);
+
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+    transition: .2s;
+}
+
+.category-card:hover{
+    transform: translateY(-2px);
+}
+
+/* FILTRES */
+
+.oeuvres-filters{
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+
+    margin-bottom: 25px;
+}
+
+.oeuvres-filters input{
+    flex: 1;
+    min-width: 250px;
+}
+
+.oeuvres-filters select{
+    width: 240px;
+}
+
+
+/* ==========================
+   PEINTURES PAGE
+========================== */
+
+.peintures-page{
+    max-width: 1400px;
+    margin: auto;
+}
+
+/* HERO */
+
+.peintures-hero{
+    position: relative;
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    padding: 45px 50px;
+    min-height: 240px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    margin-bottom: 25px;
+
+    background:
+        linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)),
+        url("https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=2070");
+
+    background-size: cover;
+    background-position: center;
+}
+
+.peintures-hero h1{
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: white;
+}
+
+.peintures-hero p{
+    font-size: 16px;
+    max-width: 650px;
+    color: rgba(255,255,255,.9);
+}
+
+.badge-peinture{
+    display: inline-block;
+    width: fit-content;
+
+    padding: 7px 14px;
+    margin-bottom: 15px;
+
+    border-radius: 999px;
+
+    background: rgba(255,255,255,.15);
+    color: white;
+}
+
+/* STYLES */
+
+.peinture-styles{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    margin-bottom: 25px;
+}
+
+.style-pill{
+    padding: 10px 18px;
+
+    border-radius: 999px;
+
+    background: white;
+    box-shadow: 0 3px 12px rgba(0,0,0,.06);
+
+    cursor: pointer;
+    transition: .2s;
+}
+
+.style-pill:hover{
+    transform: translateY(-2px);
+}
+
+
+/* ==========================
+   ART ITEMS (Œuvres + Peintures)
+========================== */
+
+.art-item{
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+
+    box-shadow: 0 4px 20px rgba(0,0,0,.06);
+
+    transition: .25s;
+    height: 100%;
+}
+
+.art-item:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,.12);
+}
+
+.art-item-image{
+    width: 100%;
+    aspect-ratio: 4 / 5;
+
+    object-fit: cover;
+    display: block;
+}
+
+.art-item-info{
+    padding: 18px;
+}
+
+.art-title{
+    font-size: 18px;
+    font-weight: 700;
+    color: #111;
+
+    margin-bottom: 6px;
+}
+
+.art-artist{
+    font-size: 15px;
+    font-weight: 600;
+    color: #444;
+
+    margin-bottom: 8px;
+}
+
+.art-details{
+    font-size: 14px;
+    color: #777;
+
+    margin-bottom: 14px;
+}
+
+.art-price{
+    font-size: 20px;
+    font-weight: 800;
+    color: #111;
+}
+
+
+/* ==========================
+   RESPONSIVE
+========================== */
+
+@media (max-width: 992px){
+
+    .oeuvres-hero,
+    .peintures-hero{
+        padding: 35px;
+        min-height: 200px;
+    }
+
+    .oeuvres-hero h1,
+    .peintures-hero h1{
+        font-size: 34px;
+    }
+}
+
+@media (max-width: 768px){
+
+    .oeuvres-hero,
+    .peintures-hero{
+        padding: 30px;
+    }
+
+    .oeuvres-hero h1,
+    .peintures-hero h1{
+        font-size: 28px;
+    }
+
+    .oeuvres-filters{
+        flex-direction: column;
+    }
+
+    .oeuvres-filters select{
+        width: 100%;
+    }
+}
+
+
+/* ==========================
+   DARK MODE - OEUVRES
+========================== */
+
+body.dark-mode .category-card{
+    background: #1e1e1e;
+    color: #e4e4e4;
+    box-shadow: 0 4px 20px rgba(0,0,0,.4);
+}
+
+body.dark-mode .category-card:hover{
+    background: #252525;
+}
+
+body.dark-mode .oeuvres-hero{
+    box-shadow: 0 5px 30px rgba(0,0,0,.5);
+}
+
+body.dark-mode .badge-oeuvres{
+    background: rgba(255,255,255,.12);
+}
+
+body.dark-mode .oeuvres-filters .form-control{
+    background: #1e1e1e;
+    border: 1px solid #333;
+    color: #e4e4e4;
+}
+
+body.dark-mode .oeuvres-filters .form-control::placeholder{
+    color: #999;
+}
+
+body.dark-mode .oeuvres-filters .form-control:focus{
+    background: #1e1e1e;
+    border-color: #555;
+    color: #fff;
+    box-shadow: none;
+}
+
+body.dark-mode .oeuvres-filters select option{
+    background: #1e1e1e;
+    color: #fff;
+}
+
+
+/* ==========================
+   DARK MODE - PEINTURES
+========================== */
+
+body.dark-mode .style-pill{
+    background: #1e1e1e;
+    color: #e4e4e4;
+    box-shadow: 0 4px 20px rgba(0,0,0,.4);
+}
+
+body.dark-mode .style-pill:hover{
+    background: #252525;
+}
+
+body.dark-mode .badge-peinture{
+    background: rgba(255,255,255,.12);
+}
+
+body.dark-mode .peintures-hero{
+    box-shadow: 0 5px 30px rgba(0,0,0,.5);
+}
+
+
+/* ==========================
+   DARK MODE - ART ITEMS
+========================== */
+
+body.dark-mode .art-item{
+    background: #1e1e1e;
+    box-shadow: 0 4px 20px rgba(0,0,0,.5);
+}
+
+body.dark-mode .art-title,
+body.dark-mode .art-price{
+    color: #ffffff;
+}
+
+body.dark-mode .art-artist{
+    color: #d1d5db;
+}
+
+body.dark-mode .art-details{
+    color: #9ca3af;
+}
+
+
+
+
+/* ==========================
+   FOOTER PRIX + LIKE
+========================== */
+
+.art-footer,
+.artist-work-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:14px;
+}
+
+/* ==========================
+   LIKE BUTTON
+========================== */
+
+.like-btn{
+    border:none;
+    background:transparent;
+    padding:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+}
+
+.like-btn i{
+    font-size:24px;
+    color:#9ca3af;
+
+    transition:0.2s;
+}
+
+.like-btn:hover i{
+    transform:scale(1.15);
+    color:#3b82f6;
+}
+
+/* Coeur liké */
+
+.like-btn.active i{
+    color:#0d6efd;
+}
+
+/* Dark mode */
+
+body.dark-mode .like-btn i{
+    color:#888;
+}
+
+body.dark-mode .like-btn:hover i{
+    color:#60a5fa;
+}
+
+body.dark-mode .like-btn.active i{
+    color:#60a5fa;
 }

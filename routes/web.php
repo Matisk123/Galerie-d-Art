@@ -66,3 +66,15 @@ Route::middleware(['auth','role:super_admin'])->prefix('admin')->group(function(
 Route::get('/artistes', function () {
     return view('artistes.index');
 });
+
+Route::get('/oeuvres', function () {
+    return view('oeuvres.index');
+})->name('oeuvres');
+
+Route::get('/peintures', function () {
+    return view('peintures.index');
+})->name('peintures');
+
+Route::get('/expositions', function () {
+    return view('expositions.index');
+});
