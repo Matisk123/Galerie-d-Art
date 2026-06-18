@@ -80,7 +80,7 @@ class User extends Authenticatable
 
     public function favorites()
     {
-        return $this->belongsToMany(\App\Models\Oeuvre::class, 'favorites');
+        return $this->belongsToMany(Oeuvre::class, 'favorites');
     }
 }
 

@@ -2360,3 +2360,21 @@ body.dark-mode .like-btn.active i{
         transform: scale(1);
     }
 }
+
+.favorite-btn {
+    font-size: 22px;
+    cursor: pointer;
+    color: #bbb;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.favorite-btn.active {
+    color: #1e6bff; /* bleu */
+    transform: scale(1.1);
+}
+
+.favorite-btn.pop {
+    transform: scale(1.4);
+    transition: transform 0.2s ease;
+}

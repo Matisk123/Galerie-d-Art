@@ -30,8 +30,8 @@ class Oeuvre extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function favoritedBy()
+    public function favorites()
     {
-        return $this->belongsToMany(\App\Models\User::class, 'favorites');
+        return $this->hasMany(\App\Models\Favorite::class);
     }
 }

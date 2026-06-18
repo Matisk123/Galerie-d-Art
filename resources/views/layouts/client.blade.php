@@ -254,5 +254,52 @@
 
     });
 </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        document.querySelectorAll('.favorite-btn').forEach(btn => {
+
+            btn.addEventListener('click', async function (e) {
+                e.preventDefault();
+                e.stopPropagation(); // IMPORTANT pour ne pas déclencher le lien parent
+
+                const oeuvreId = this.dataset.id;
+
+                try {
+                    const response = await fetch(`/favorites/${oeuvreId}`, {
+                        method: "POST",
+                        headers: {
+                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                            "Content-Type": "application/json",
+                            "Accept": "application/json"
+                        }
+                    });
+
+                    const data = await response.json();
+
+                    if (data.status === 'added') {
+                        this.classList.add('active');
+                        animateHeart(this);
+                    }
+
+                    if (data.status === 'removed') {
+                        this.classList.remove('active');
+                    }
+
+                } catch (error) {
+                    console.error("Erreur favori:", error);
+                }
+            });
+
+        });
+
+        function animateHeart(el) {
+            el.classList.add('pop');
+            setTimeout(() => el.classList.remove('pop'), 300);
+        }
+
+    });
+</script>
 </body>
 </html>

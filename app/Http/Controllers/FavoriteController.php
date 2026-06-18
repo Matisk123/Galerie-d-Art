@@ -4,11 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Favorite;
 use App\Models\Oeuvre;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class FavoriteController extends Controller
 {
+    public function index()
+    {
+        $favorites = Oeuvre::whereIn('id', function ($query) {
+            $query->select('oeuvre_id')
+                ->from('favorites')
+                ->where('user_id', Auth::id());
+        })->get();
+
+        return view('profile.favorites', compact('favorites'));
+    }
+
     public function toggle(Oeuvre $oeuvre)
     {
         $user = Auth::user();
@@ -19,7 +29,9 @@ class FavoriteController extends Controller
 
         if ($fav) {
             $fav->delete();
-            return response()->json(['status' => 'removed']);
+            return response()->json([
+                'status' => 'removed'
+            ]);
         }
 
         Favorite::create([
@@ -27,6 +39,8 @@ class FavoriteController extends Controller
             'oeuvre_id' => $oeuvre->id,
         ]);
 
-        return response()->json(['status' => 'added']);
+        return response()->json([
+            'status' => 'added'
+        ]);
     }
 }

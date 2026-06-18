@@ -8,6 +8,8 @@ use App\Http\Controllers\AdminRequestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\OeuvreController;
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\StatsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -74,14 +76,17 @@ Route::get('/expositions', function () {
     return view('expositions.index');
 });
 
-Route::post('/oeuvres/{oeuvre}/favorite', [OeuvreController::class, 'toggleFavorite'])
-    ->middleware('auth')
-    ->name('oeuvres.favorite');
-
-Route::middleware('auth')->post('/favorites/{oeuvre}', [FavoriteController::class, 'toggle'])
-    ->name('favorites.toggle');
-
 Route::middleware('auth')->group(function () {
-    Route::post('/oeuvres/{oeuvre}/favorite', [OeuvreController::class, 'toggleFavoriteAjax'])
-        ->name('oeuvres.favorite');
+
+    Route::get('/profile/favorites', [FavoriteController::class, 'index'])
+        ->name('favorites.index');
+
+    Route::post('/favorites/{oeuvre}', [FavoriteController::class, 'toggle'])
+        ->name('favorites.toggle');
+});
+
+Route::middleware(['auth', 'role:admin,super_admin'])->group(function () {
+
+    Route::get('/admin/statistiques', [StatsController::class, 'index'])
+        ->name('admin.stats');
 });
