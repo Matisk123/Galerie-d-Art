@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Oeuvre;
 
 class User extends Authenticatable
 {
@@ -70,6 +71,16 @@ class User extends Authenticatable
     public function info()
     {
         return $this->hasOne(\App\Models\UserInfo::class);
+    }
+
+    public function oeuvres()
+    {
+        return $this->hasMany(\App\Models\Oeuvre::class);
+    }
+
+    public function favorites()
+    {
+        return $this->belongsToMany(\App\Models\Oeuvre::class, 'favorites');
     }
 }
 

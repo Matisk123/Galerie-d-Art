@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Oeuvre;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class MenuController extends Controller
@@ -14,16 +15,32 @@ class MenuController extends Controller
 
     public function index()
     {
-        $user = Auth::user();
+        $oeuvresCount = Oeuvre::where('is_published', true)->count();
 
-        if ($user->hasRole('super_admin')) {
-            return view('menus.super_admin');
-        }
+        $artistesCount = User::whereHas('oeuvres', function ($q) {
+            $q->where('is_published', true);
+        })->count();
 
-        if ($user->hasRole('admin')) {
-            return view('menus.admin');
-        }
+        $oeuvresPopulaires = Oeuvre::where('is_published', true)
+            ->inRandomOrder()
+            ->limit(6)
+            ->get();
 
-        return view('menus.client');
+        $artistesPopulaires = User::whereHas('oeuvres', function ($q) {
+            $q->where('is_published', true);
+        })
+            ->withCount(['oeuvres' => function ($q) {
+                $q->where('is_published', true);
+            }])
+            ->inRandomOrder()
+            ->limit(4)
+            ->get();
+
+        return view('menus.client', compact(
+            'oeuvresCount',
+            'artistesCount',
+            'oeuvresPopulaires',
+            'artistesPopulaires'
+        ));
     }
 }

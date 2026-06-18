@@ -21,9 +21,12 @@
                         @if(Auth::user()->hasRole('client'))
                             <li class="mt-2">
                                 @if($canRequestAdmin)
-                                    <a href="{{ route('admin-request.create') }}" class="profile-menu-link w-100 text-start p-2">
-                                        Faire une demande Admin
-                                    </a>
+                                    @if(Auth::user()->hasRole('client') && Route::has('admin-request.create'))
+                                        <a href="{{ route('admin-request.create') }}"
+                                           class="profile-menu-link w-100 text-start p-2">
+                                            Faire une demande Admin
+                                        </a>
+                                    @endif
                                 @else
                                     @if($lastAdminRequest->status == 'pending')
                                         <span class="badge bg-warning w-100 d-block text-center">Demande en attente</span>
@@ -42,7 +45,12 @@
 
                         {{-- Admin & Super Admin menus --}}
                         @if(Auth::user()->hasRole('admin'))
-                            <li><a href="/admin/oeuvres">Gestion des œuvres</a></li>
+                            {{-- <li><a href="/admin/oeuvres">Gestion des œuvres</a></li> --}}
+                            <li>
+                                <a href="{{route('admin.oeuvres')}}">
+                                    Gestion des œuvres
+                                </a>
+                            </li>
                             <li><a href="/admin/statistiques">Statistiques des œuvres</a></li>
                             <li><a href="/admin/expositions">Gestion des expositions</a></li>
                         @endif
@@ -56,7 +64,12 @@
                             <li><a href="/super-admin/admin-requests">Demandes Admin</a></li>
                             <li><a href="/super-admin/statistiques">Statistiques plateforme</a></li>
                             <hr>
-                            <li><a href="/admin/oeuvres">Gestion des œuvres</a></li>
+                            {{-- <li><a href="/admin/oeuvres">Gestion des œuvres</a></li> --}}
+                            <li>
+                                <a href="{{route('admin.oeuvres')}}">
+                                    Gestion des œuvres
+                                </a>
+                            </li>
                             <li><a href="/admin/statistiques">Statistiques des œuvres</a></li>
                             <li><a href="/admin/expositions">Gestion des expositions</a></li>
                         @endif

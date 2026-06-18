@@ -4,16 +4,13 @@
 
     <div class="peintures-page">
 
-        {{-- HERO --}}
         <div class="peintures-hero">
 
         <span class="badge-peinture">
             Univers peinture
         </span>
 
-            <h1>
-                La peinture contemporaine
-            </h1>
+            <h1>La peinture contemporaine</h1>
 
             <p>
                 Explorez des œuvres abstraites, modernes et expressives
@@ -22,7 +19,6 @@
 
         </div>
 
-        {{-- FILTRES STYLES --}}
         <div class="peinture-styles">
 
             @php
@@ -33,48 +29,52 @@
             @endphp
 
             @foreach($styles as $style)
-                <div class="style-pill">
-                    {{ $style }}
-                </div>
+                <div class="style-pill">{{ $style }}</div>
             @endforeach
 
         </div>
 
-        {{-- LISTE PEINTURES --}}
         <div class="row g-4 mt-4">
 
-            @for($i = 1; $i <= 12; $i++)
+            @forelse($oeuvres as $oeuvre)
 
                 <div class="col-xl-3 col-lg-4 col-md-6">
 
                     <div class="art-item">
 
-                        <img src="https://picsum.photos/500/650?random={{ $i }}"
-                             class="art-item-image">
+                        <div class="art-image-wrapper">
+                            <a href="{{ route('oeuvres.show', $oeuvre) }}">
+                                @if($oeuvre->image)
+                                    <img src="{{ asset('storage/'.$oeuvre->image) }}"
+                                         class="art-item-image">
+                                @endif
+                            </a>
+                        </div>
 
                         <div class="art-item-info">
 
                             <div class="art-title">
-                                Sans titre
+                                {{ $oeuvre->titre }}
                             </div>
 
                             <div class="art-artist">
-                                Artiste {{ $i }}
+                                {{ $oeuvre->artist_name }}
                             </div>
 
                             <div class="art-details">
-                                Peinture • 80 x 60 cm
+                                {{ $oeuvre->largeur }} x {{ $oeuvre->hauteur }} cm
                             </div>
 
-                            <div class="artist-work-footer">
+                            <div class="artist-work-footer d-flex justify-content-between align-items-center">
 
-                                <div class="artist-work-price">
-                                    {{ rand(1200,9500) }} €
+                                <div class="art-price">
+                                    {{ number_format($oeuvre->prix,0,',',' ') }} €
                                 </div>
 
-                                <button class="like-btn">
-                                    <i class="bi bi-heart"></i>
-                                </button>
+                                <div class="favorite-btn {{ auth()->check() && auth()->user()->favorites->contains($oeuvre->id) ? 'active' : '' }}"
+                                     data-id="{{ $oeuvre->id }}">
+                                    ♥
+                                </div>
 
                             </div>
 
@@ -84,8 +84,16 @@
 
                 </div>
 
-            @endfor
+            @empty
+
+                <div class="text-center py-5">
+                    <h5>Aucune peinture disponible</h5>
+                </div>
+
+            @endforelse
 
         </div>
+
+    </div>
 
 @endsection

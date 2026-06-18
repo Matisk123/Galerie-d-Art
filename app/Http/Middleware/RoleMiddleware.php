@@ -9,14 +9,20 @@ use Illuminate\Support\Facades\Auth;
 class RoleMiddleware
 {
     /**
-     * Vérifie que l'utilisateur a le rôle demandé
+     * Vérifie que l'utilisateur possède au moins un des rôles demandés.
      */
-    public function handle(Request $request, Closure $next, $role)
+    public function handle(Request $request, Closure $next, ...$roles)
     {
-        if (!Auth::check() || !$request->user()->hasRole($role)) {
+        if (!Auth::check()) {
             return redirect('/login');
         }
 
-        return $next($request);
+        foreach ($roles as $role) {
+            if ($request->user()->hasRole($role)) {
+                return $next($request);
+            }
+        }
+
+        return redirect('/menu');
     }
 }

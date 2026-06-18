@@ -4,16 +4,13 @@
 
     <div class="oeuvres-page">
 
-        {{-- HERO --}}
         <div class="oeuvres-hero">
 
         <span class="badge-oeuvres">
             Collection de la galerie
         </span>
 
-            <h1>
-                Œuvres & objets d’art
-            </h1>
+            <h1>Œuvres & objets d’art</h1>
 
             <p>
                 Découvrez un univers varié : peintures, sculptures, céramiques,
@@ -22,7 +19,6 @@
 
         </div>
 
-        {{-- CATEGORIES --}}
         <div class="oeuvres-categories">
 
             @php
@@ -40,10 +36,10 @@
 
         </div>
 
-        {{-- FILTRES --}}
         <div class="oeuvres-filters">
 
-            <input type="text" class="form-control" placeholder="Rechercher une œuvre...">
+            <input type="text" class="form-control"
+                   placeholder="Rechercher une œuvre...">
 
             <select class="form-control">
                 <option>Toutes les catégories</option>
@@ -56,50 +52,46 @@
 
         <div class="row g-4 mt-4">
 
-            @php
-                $types = [
-                    'Peinture',
-                    'Sculpture',
-                    'Céramique',
-                    'Bouteille décorative',
-                    'Assiette décorative',
-                    'Photographie'
-                ];
-            @endphp
-
-            @for($i = 1; $i <= 16; $i++)
+            @forelse($oeuvres as $oeuvre)
 
                 <div class="col-xl-3 col-lg-4 col-md-6">
 
                     <div class="art-item">
 
-                        <img src="https://picsum.photos/500/650?random={{ $i }}"
-                             class="art-item-image">
+                        <div class="art-image-wrapper">
+                            <a href="{{ route('oeuvres.show', $oeuvre) }}">
+                                @if($oeuvre->image)
+                                    <img src="{{ asset('storage/'.$oeuvre->image) }}"
+                                         class="art-item-image">
+                                @endif
+                            </a>
+                        </div>
 
                         <div class="art-item-info">
 
                             <div class="art-title">
-                                Sans titre
+                                {{ $oeuvre->titre }}
                             </div>
 
                             <div class="art-artist">
-                                Artiste {{ rand(1,10) }}
+                                {{ $oeuvre->artist_name }}
                             </div>
 
                             <div class="art-details">
-                                {{ $types[array_rand($types)] }} •
-                                {{ rand(20,120) }} x {{ rand(20,120) }} cm
+                                {{ $oeuvre->categorie }}
+                                • {{ $oeuvre->largeur }} x {{ $oeuvre->hauteur }} cm
                             </div>
 
-                            <div class="artist-work-footer">
+                            <div class="artist-work-footer d-flex justify-content-between align-items-center">
 
                                 <div class="art-price">
-                                    {{ rand(150,9500) }} €
+                                    {{ number_format($oeuvre->prix,0,',',' ') }} €
                                 </div>
 
-                                <button class="like-btn">
-                                    <i class="bi bi-heart"></i>
-                                </button>
+                                <div class="favorite-btn {{ auth()->check() && auth()->user()->favorites->contains($oeuvre->id) ? 'active' : '' }}"
+                                     data-id="{{ $oeuvre->id }}">
+                                    ♥
+                                </div>
 
                             </div>
 
@@ -109,7 +101,13 @@
 
                 </div>
 
-            @endfor
+            @empty
+
+                <div class="text-center py-5">
+                    <h5>Aucune œuvre disponible</h5>
+                </div>
+
+            @endforelse
 
         </div>
 

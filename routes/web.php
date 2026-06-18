@@ -4,10 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\MenuController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminRequestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\UserManagementController;
+use App\Http\Controllers\OeuvreController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -15,66 +15,73 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::middleware(['auth','role:super_admin'])->group(function(){
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/menu', [MenuController::class, 'index'])->name('menu');
+
+    Route::get('/profile', [ProfileController::class,'index'])->name('profile');
+    Route::post('/profile/update', [ProfileController::class,'update'])->name('profile.update');
+
+    Route::get('/profile/informations', [ProfileController::class,'informationPage'])->name('profile.info');
+    Route::post('/profile/informations', [ProfileController::class,'saveInformation'])->name('profile.info.save');
+
+    Route::get('/admin-request', [AdminRequestController::class,'create'])->name('admin-request.create');
+    Route::post('/admin-request', [AdminRequestController::class,'store'])->name('admin-request.store');
+});
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'dashboard']);
+});
+
+Route::middleware(['auth', 'role:super_admin'])->group(function () {
+
     Route::get('/super-admin/admin-requests', [SuperAdminController::class,'listRequests']);
     Route::post('/super-admin/admin-requests/{id}/accept', [SuperAdminController::class,'acceptRequest']);
     Route::post('/super-admin/admin-requests/{id}/refuse', [SuperAdminController::class,'refuseRequest']);
-});
 
-Route::middleware(['auth','role:admin'])->group(function(){
-    Route::get('/admin', [AdminController::class,'dashboard']);
-});
-
-Route::middleware(['auth'])->group(function(){
-    Route::get('/menu', [MenuController::class,'index']);
-});
-
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/admin-request', [AdminRequestController::class,'create'])->name('admin-request.create');
-    Route::post('/admin-request', [AdminRequestController::class, 'store'])->name('admin-request.store');
-});
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class,'index'])->name('profile');
-    Route::post('/profile/update', [ProfileController::class,'update'])->name('profile.update');
-});
-Route::middleware(['auth','role:super_admin'])->group(function(){
-    // Page archive demandes admin
     Route::get('/super-admin/admin-requests/archive', [SuperAdminController::class, 'archivedRequests'])
         ->name('super-admin.admin-requests.archive');
+
+    Route::prefix('admin')->group(function () {
+
+        Route::get('/users', [UserManagementController::class,'index'])->name('admin.users');
+        Route::post('/users/{user}/role', [UserManagementController::class,'updateRole'])->name('admin.users.role');
+        Route::delete('/users/{user}', [UserManagementController::class,'destroy'])->name('admin.users.delete');
+    });
 });
 
-Route::get('/profile/informations', [ProfileController::class,'informationPage'])->name('profile.info');
+Route::middleware(['auth', 'role:admin,super_admin'])->group(function () {
 
-Route::post('/profile/informations', [ProfileController::class,'saveInformation'])->name('profile.info.save');
+    Route::get('/admin/oeuvres', [OeuvreController::class, 'index'])->name('admin.oeuvres');
+    Route::get('/admin/oeuvres/create', [OeuvreController::class, 'create'])->name('admin.oeuvres.create');
+    Route::post('/admin/oeuvres', [OeuvreController::class, 'store'])->name('admin.oeuvres.store');
 
-Route::middleware(['auth','role:super_admin'])->prefix('admin')->group(function(){
-
-    Route::get('/users', [UserManagementController::class,'index'])
-        ->name('admin.users');
-
-    Route::post('/users/{user}/role', [UserManagementController::class,'updateRole'])
-        ->name('admin.users.role');
-
-    Route::delete('/users/{user}', [UserManagementController::class,'destroy'])
-        ->name('admin.users.delete');
-
+    Route::get('/admin/oeuvres/{oeuvre}', [OeuvreController::class, 'show'])->name('admin.oeuvres.show');
+    Route::get('/admin/oeuvres/{oeuvre}/edit', [OeuvreController::class, 'edit'])->name('admin.oeuvres.edit');
+    Route::put('/admin/oeuvres/{oeuvre}', [OeuvreController::class, 'update'])->name('admin.oeuvres.update');
+    Route::delete('/admin/oeuvres/{oeuvre}', [OeuvreController::class, 'destroy'])->name('admin.oeuvres.destroy');
 });
 
-Route::get('/artistes', function () {
-    return view('artistes.index');
-});
+Route::get('/oeuvres', [OeuvreController::class, 'publicIndex'])->name('oeuvres');
 
-Route::get('/oeuvres', function () {
-    return view('oeuvres.index');
-})->name('oeuvres');
+Route::get('/oeuvres/{oeuvre}', [OeuvreController::class, 'showPublic'])->name('oeuvres.show');
 
-Route::get('/peintures', function () {
-    return view('peintures.index');
-})->name('peintures');
+Route::get('/peintures', [OeuvreController::class, 'peintures'])->name('peintures');
+
+Route::get('/artistes', [OeuvreController::class, 'artistes'])->name('artistes');
 
 Route::get('/expositions', function () {
     return view('expositions.index');
+});
+
+Route::post('/oeuvres/{oeuvre}/favorite', [OeuvreController::class, 'toggleFavorite'])
+    ->middleware('auth')
+    ->name('oeuvres.favorite');
+
+Route::middleware('auth')->post('/favorites/{oeuvre}', [FavoriteController::class, 'toggle'])
+    ->name('favorites.toggle');
+
+Route::middleware('auth')->group(function () {
+    Route::post('/oeuvres/{oeuvre}/favorite', [OeuvreController::class, 'toggleFavoriteAjax'])
+        ->name('oeuvres.favorite');
 });

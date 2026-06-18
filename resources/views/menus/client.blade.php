@@ -38,55 +38,38 @@
 
         </div>
 
-
         {{-- STATS --}}
         <div class="row g-4 mt-1">
 
             <div class="col-md-4">
-
                 <div class="home-card stat-card">
-
-                    <h3>250+</h3>
-
+                    <h3>{{ $oeuvresCount }}</h3>
                     <p>Œuvres disponibles</p>
-
                 </div>
-
             </div>
 
             <div class="col-md-4">
-
                 <div class="home-card stat-card">
-
-                    <h3>40+</h3>
-
+                    <h3>{{ $artistesCount }}</h3>
                     <p>Artistes partenaires</p>
-
                 </div>
-
             </div>
 
             <div class="col-md-4">
-
                 <div class="home-card stat-card">
-
                     <h3>12</h3>
-
                     <p>Expositions actives</p>
-
                 </div>
-
             </div>
 
         </div>
 
-
-        {{-- OEUVRES POPULAIRES --}}
+        {{-- ŒUVRES POPULAIRES --}}
         <div class="section-header mt-5">
 
             <h2>Œuvres populaires</h2>
 
-            <a href="/oeuvres">
+            <a href="{{ route('oeuvres') }}">
                 Voir tout
             </a>
 
@@ -94,20 +77,48 @@
 
         <div class="row g-4">
 
-            @for($i = 0; $i < 6; $i++)
+            @foreach($oeuvresPopulaires as $oeuvre)
 
-                <div class="col-lg-4 col-md-6">
+                <div class="col-xl-4 col-lg-6 col-md-6">
 
-                    <div class="home-card artwork-card">
+                    <div class="art-item">
 
-                        <img src="https://picsum.photos/500/350?random={{ $i }}"
-                             class="artwork-image">
+                        <div class="art-image-wrapper">
+                            <a href="{{ route('oeuvres.show', $oeuvre) }}">
+                                @if($oeuvre->image)
+                                    <img src="{{ asset('storage/'.$oeuvre->image) }}"
+                                         class="art-item-image">
+                                @endif
+                            </a>
+                        </div>
 
-                        <div class="artwork-content">
+                        <div class="art-item-info">
 
-                            <h5>Œuvre contemporaine</h5>
+                            <div class="art-title">
+                                {{ $oeuvre->titre }}
+                            </div>
 
-                            <p>Artiste moderne</p>
+                            <div class="art-artist">
+                                {{ $oeuvre->artist_name }}
+                            </div>
+
+                            <div class="art-details">
+                                {{ $oeuvre->categorie }} •
+                                {{ $oeuvre->largeur }} x {{ $oeuvre->hauteur }} cm
+                            </div>
+
+                            <div class="artist-work-footer d-flex justify-content-between align-items-center">
+
+                                <div class="art-price">
+                                    {{ number_format($oeuvre->prix,0,',',' ') }} €
+                                </div>
+
+                                <div class="favorite-btn {{ auth()->check() && auth()->user()->favorites->contains($oeuvre->id) ? 'active' : '' }}"
+                                     data-id="{{ $oeuvre->id }}">
+                                    ♥
+                                </div>
+
+                            </div>
 
                         </div>
 
@@ -115,59 +126,50 @@
 
                 </div>
 
-            @endfor
+            @endforeach
 
         </div>
 
-
         {{-- ARTISTES --}}
         <div class="section-header mt-5">
-
             <h2>Artistes à découvrir</h2>
-
-            <a href="/artistes">
-                Voir tout
-            </a>
-
+            <a href="/artistes">Voir tout</a>
         </div>
 
         <div class="row g-4">
 
-            @for($i = 0; $i < 4; $i++)
+            @foreach($artistesPopulaires as $artist)
 
                 <div class="col-lg-3 col-md-6">
 
                     <div class="home-card artist-card text-center">
 
-                        <img src="https://i.pravatar.cc/200?img={{ $i+10 }}"
-                             class="artist-avatar">
+                        @if($artist->profile_photo)
+                            <img src="{{ asset('storage/'.$artist->profile_photo) }}"
+                                 class="artist-avatar">
+                        @else
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode($artist->name) }}"
+                                 class="artist-avatar">
+                        @endif
 
                         <h5 class="mt-3">
-                            Artiste {{ $i + 1 }}
+                            {{ $artist->name }}
                         </h5>
 
-                        <p>
-                            Art contemporain
-                        </p>
+                        <p>Art contemporain</p>
 
                     </div>
 
                 </div>
 
-            @endfor
+            @endforeach
 
         </div>
 
-
         {{-- EXPOSITIONS --}}
         <div class="section-header mt-5">
-
             <h2>Expositions</h2>
-
-            <a href="/expositions">
-                Voir tout
-            </a>
-
+            <a href="/expositions">Voir tout</a>
         </div>
 
         <div class="home-card exhibition-banner">

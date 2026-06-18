@@ -41,6 +41,6 @@ class AdminRequestController extends Controller
             ]);
         }
 
-        return redirect('/home')->with('success','Demande envoyée');
+        return redirect('/menu')->with('success','Demande envoyée');
     }
 }

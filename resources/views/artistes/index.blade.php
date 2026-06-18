@@ -14,7 +14,7 @@
             </span>
 
                 <h1>
-                    Découvrez les artistes de la galerie
+                    Découvrez les vendeurs de la galerie
                 </h1>
 
                 <p>
@@ -27,54 +27,32 @@
         </div>
 
 
-        {{-- SEARCH + FILTER --}}
+        {{-- SEARCH + FILTER (UI only pour l'instant) --}}
         <div class="artists-toolbar">
 
             <div class="search-box">
-
                 <input type="text"
                        class="form-control"
                        placeholder="Rechercher un artiste...">
-
             </div>
 
             <div class="filter-box">
-
                 <select class="form-control">
-
-                    <option>
-                        Tous les styles
-                    </option>
-
-                    <option>
-                        Art moderne
-                    </option>
-
-                    <option>
-                        Peinture
-                    </option>
-
-                    <option>
-                        Sculpture
-                    </option>
-
-                    <option>
-                        Photographie
-                    </option>
-
+                    <option>Tous les styles</option>
+                    <option>Art moderne</option>
+                    <option>Peinture</option>
+                    <option>Sculpture</option>
+                    <option>Photographie</option>
                 </select>
-
             </div>
 
         </div>
 
 
-        </div>{{-- LIST ARTISTS --}}
-
+        {{-- LIST ARTISTS --}}
         <div class="artists-list">
 
-            @for($i = 1; $i <= 10; $i++)
-
+            @foreach($artistes as $artiste)
 
                 <div class="artist-line-card">
 
@@ -83,92 +61,84 @@
 
                         <div class="artist-header">
 
-                            <img src="https://i.pravatar.cc/200?img={{ $i + 20 }}"
-                                 class="artist-avatar-large">
+                            @if($artiste->profile_photo)
+                                <img src="{{ asset('storage/'.$artiste->profile_photo) }}"
+                                     class="artist-avatar-large">
+                            @else
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode($artiste->name) }}"
+                                     class="artist-avatar-large">
+                            @endif
 
                             <div class="artist-name-block">
 
                                 <h3>
-                                    Artiste {{ $i }}
+                                    {{ $artiste->name }}
                                 </h3>
 
                                 <span class="artist-speciality">
-                                    Art contemporain • France
-                                </span>
+                                Vendeur • {{ $artiste->oeuvres_count }} œuvre(s)
+                            </span>
 
                             </div>
 
                         </div>
 
-                        <a href="#"
-                           class="artist-follow-btn">
-
-                            +
-                            Suivre
-
-                        </a>
-
                     </div>
 
-
-                    {{-- RIGHT --}}
+                    {{-- RIGHT (optionnel preview œuvres) --}}
                     <div class="artist-content">
 
                         <div class="artist-top-bar">
-
-                            <a href="#"
-                               class="artist-all-link">
-
-                                Toutes les œuvres →
-
-                            </a>
-
+                        <span class="artist-all-link">
+                            Toutes les œuvres →
+                        </span>
                         </div>
-
 
                         <div class="artist-right">
 
-                            @for($x = 1; $x <= 3; $x++)
+                            @foreach($artiste->oeuvres->take(3) as $oeuvre)
 
                                 <div class="artist-work-card bordered-work">
 
-                                    <img src="https://picsum.photos/400/400?random={{ $i + $x }}"
-                                         class="artist-work-preview">
+                                    <a href="{{ route('oeuvres.show', $oeuvre) }}">
+                                        <img src="{{ asset('storage/'.$oeuvre->image) }}"
+                                             class="artist-work-preview">
+                                    </a>
 
                                     <div class="artist-work-title">
-                                        Sans titre
+                                        {{ $oeuvre->titre }}
                                     </div>
 
                                     <div class="artist-work-author">
-                                        Artiste {{ $i }}
+                                        {{ $artiste->name }}
                                     </div>
 
                                     <div class="artist-work-details">
-                                        Peinture • 80 x 60 cm
+                                        {{ $oeuvre->categorie }}
                                     </div>
 
                                     <div class="art-footer">
-
                                         <div class="art-price">
-                                            {{ rand(1200,9500) }} €
+                                            {{ number_format($oeuvre->prix,0,',',' ') }} €
                                         </div>
 
-                                        <button class="like-btn">
-                                            <i class="bi bi-heart"></i>
-                                        </button>
-
+                                        <div class="favorite-btn {{ auth()->check() && auth()->user()->favorites->contains($oeuvre->id) ? 'active' : '' }}"
+                                             data-id="{{ $oeuvre->id }}">
+                                            ♥
+                                        </div>
                                     </div>
 
                                 </div>
 
-                            @endfor
+                            @endforeach
 
                         </div>
 
                     </div>
 
                 </div>
-            @endfor
+
+            @endforeach
 
         </div>
 
