@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Oeuvre;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -121,9 +122,7 @@ class OeuvreController extends Controller
             ->whereRaw('LOWER(categorie) = ?', ['peinture']);
 
         if ($request->filled('style')) {
-            $query->whereRaw('LOWER(style) = ?', [
-                strtolower($request->style)
-            ]);
+            $query->where('style', strtolower($request->style));
         }
 
         if ($request->filled('search')) {
@@ -136,12 +135,17 @@ class OeuvreController extends Controller
         $oeuvres = $query->latest()->paginate(16);
 
         $styles = Oeuvre::where('is_published', true)
-            ->whereNotNull('style')
             ->whereRaw('LOWER(categorie) = ?', ['peinture'])
+            ->whereNotNull('style')
             ->distinct()
             ->pluck('style');
 
-        return view('peintures.index', compact('oeuvres', 'styles'));
+        $categories = Oeuvre::where('is_published', true)
+            ->select('categorie')
+            ->distinct()
+            ->pluck('categorie');
+
+        return view('peintures.index', compact('oeuvres', 'styles', 'categories'));
     }
 
     public function show(Oeuvre $oeuvre)
@@ -155,7 +159,9 @@ class OeuvreController extends Controller
             abort(404);
         }
 
-        return view('oeuvres.show', compact('oeuvre'));
+        $vendeur = User::find($oeuvre->user_id);
+
+        return view('oeuvres.show', compact('oeuvre', 'vendeur'));
     }
 
     public function destroy(Oeuvre $oeuvre)
@@ -194,5 +200,36 @@ class OeuvreController extends Controller
             ->where('titre', 'like', "%{$request->search}%")
             ->limit(5)
             ->pluck('titre');
+    }
+
+    public function oeuvresByArtist(User $user)
+    {
+        $oeuvres = Oeuvre::where('user_id', $user->id)
+            ->where('is_published', true)
+            ->latest()
+            ->get();
+
+        if ($oeuvres->isEmpty()) {
+            abort(404);
+        }
+
+        return view('oeuvres.by-artist', compact('user', 'oeuvres'));
+    }
+    public function artistes()
+    {
+        $artistes = \App\Models\User::whereHas('oeuvres', function ($q) {
+            $q->where('is_published', true);
+        })
+            ->withCount(['oeuvres' => function ($q) {
+                $q->where('is_published', true);
+            }])
+            ->with(['oeuvres' => function ($q) {
+                $q->where('is_published', true)
+                    ->latest()
+                    ->take(3);
+            }])
+            ->get();
+
+        return view('artistes.index', compact('artistes'));
     }
 }

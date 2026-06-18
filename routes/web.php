@@ -104,3 +104,9 @@ Route::get('/oeuvres/{oeuvre}', [OeuvreController::class, 'showPublic'])
 
 Route::get('/peintures/search/suggestions', [OeuvreController::class, 'peintureSuggestions'])
     ->name('peintures.search.suggestions');
+
+Route::get('/artistes/{user}/oeuvres', [OeuvreController::class, 'oeuvresByArtist'])
+    ->name('artistes.oeuvres');
+
+Route::get('/artistes/{user}', [OeuvreController::class, 'oeuvresByArtist'])
+    ->name('artistes.show');

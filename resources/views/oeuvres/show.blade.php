@@ -50,17 +50,26 @@
 
                     <div class="card p-4 shadow-sm border-0">
 
-                        <h3 class="text-primary mb-3">
-                            {{ number_format($oeuvre->prix, 0, ',', ' ') }} €
-                        </h3>
+                        <div class="card p-3 mt-4 shadow-sm border-0">
+                            <a href="{{ route('artistes.show', $vendeur) }}"
+                               class="d-flex align-items-center text-decoration-none text-dark">
 
-                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                @if($vendeur->profile_photo)
+                                    <img src="{{ asset('storage/'.$vendeur->profile_photo) }}"
+                                         class="rounded-circle me-3"
+                                         width="70"
+                                         height="70"
+                                         style="object-fit: cover;">
+                                @else
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($vendeur->name) }}"
+                                         class="rounded-circle me-3">
+                                @endif
 
-                            <div class="favorite-btn {{ auth()->user()->favorites->where('oeuvre_id', $oeuvre->id)->count() ? 'active' : '' }}"
-                                 data-id="{{ $oeuvre->id }}">
-                                ♥
-                            </div>
-
+                                <div>
+                                    <h5 class="mb-1">{{ $vendeur->name }}</h5>
+                                    <small class="text-muted">Voir toutes ses œuvres →</small>
+                                </div>
+                            </a>
                         </div>
 
                         <hr>
@@ -87,6 +96,20 @@
                             {{ $oeuvre->description ?? 'Aucune description disponible.' }}
                         </p>
 
+                        <hr>
+
+                        <h3 class="text-primary mb-3">
+                            {{ number_format($oeuvre->prix, 0, ',', ' ') }} €
+                        </h3>
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+
+                            <div class="favorite-btn {{ auth()->user()->favorites->where('oeuvre_id', $oeuvre->id)->count() ? 'active' : '' }}"
+                                 data-id="{{ $oeuvre->id }}">
+                                ♥
+                            </div>
+
+                        </div>
 
                     </div>
 

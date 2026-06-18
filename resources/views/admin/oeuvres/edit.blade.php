@@ -2,123 +2,139 @@
 
 @section('content')
 
-    <div class="container py-4">
+    <div class="container py-5">
 
-        <h2 class="mb-4">Modifier l'œuvre</h2>
+        {{-- HEADER --}}
+        <div class="mb-4 text-center">
+        <span class="badge bg-dark px-3 py-2 mb-3">
+            Administration
+        </span>
 
-        <form method="POST" action="{{ route('admin.oeuvres.update', $oeuvre) }}">
-            @csrf
-            @method('PUT')
+            <h1 class="fw-bold">Modifier l’œuvre</h1>
 
-            {{-- TITRE --}}
-            <input class="form-control mb-2"
-                   name="titre"
-                   value="{{ old('titre', $oeuvre->titre) }}">
+            <p class="text-muted">
+                Modifiez les informations de votre œuvre.
+            </p>
+        </div>
 
-            {{-- ARTISTE --}}
-            <input class="form-control mb-2"
-                   name="artist_name"
-                   value="{{ old('artist_name', $oeuvre->artist_name) }}">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
 
-            {{-- CATEGORIE --}}
-            <select name="categorie" id="categorie" class="form-control mb-2">
+                <div class="card border-0 shadow-lg rounded-4">
+                    <div class="card-body p-5">
 
-                <option value="peinture"
-                    @selected(strtolower(old('categorie', $oeuvre->categorie)) == 'peinture')>
-                    Peinture
-                </option>
+                        <form method="POST" action="{{ route('admin.oeuvres.update', $oeuvre) }}">
+                            @csrf
+                            @method('PUT')
 
-                <option value="sculpture"
-                    @selected(strtolower(old('categorie', $oeuvre->categorie)) == 'sculpture')>
-                    Sculpture
-                </option>
+                            {{-- TITRE --}}
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold">Titre</label>
+                                <input class="form-control form-control-lg"
+                                       name="titre"
+                                       value="{{ old('titre', $oeuvre->titre) }}">
+                            </div>
 
-                <option value="ceramique"
-                    @selected(strtolower(old('categorie', $oeuvre->categorie)) == 'ceramique')>
-                    Céramique
-                </option>
+                            {{-- ARTISTE --}}
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold">Nom de l'artiste</label>
+                                <input class="form-control form-control-lg"
+                                       name="artist_name"
+                                       value="{{ old('artist_name', $oeuvre->artist_name) }}">
+                            </div>
 
-                <option value="photographie"
-                    @selected(strtolower(old('categorie', $oeuvre->categorie)) == 'photographie')>
-                    Photographie
-                </option>
+                            {{-- CATEGORIE --}}
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold">Catégorie</label>
 
-            </select>
+                                <select name="categorie" id="categorie" class="form-control form-control-lg">
+                                    <option value="peinture"
+                                        @selected(strtolower(old('categorie', $oeuvre->categorie)) == 'peinture')>
+                                        Peinture
+                                    </option>
 
-            {{-- STYLE PEINTURE --}}
-            <div id="style-box" class="mb-2">
+                                    <option value="sculpture"
+                                        @selected(strtolower(old('categorie', $oeuvre->categorie)) == 'sculpture')>
+                                        Sculpture
+                                    </option>
 
-                <select name="style" class="form-control">
+                                    <option value="ceramique"
+                                        @selected(strtolower(old('categorie', $oeuvre->categorie)) == 'ceramique')>
+                                        Céramique
+                                    </option>
 
-                    <option value="">-- Style peinture --</option>
+                                    <option value="photographie"
+                                        @selected(strtolower(old('categorie', $oeuvre->categorie)) == 'photographie')>
+                                        Photographie
+                                    </option>
+                                </select>
+                            </div>
 
-                    <option value="abstrait"
-                        @selected(old('style', $oeuvre->style) == 'abstrait')>
-                        Abstrait
-                    </option>
+                            {{-- STYLE --}}
+                            <div id="style-box" class="mb-4">
+                                <label class="form-label fw-semibold">Style</label>
 
-                    <option value="figuratif"
-                        @selected(old('style', $oeuvre->style) == 'figuratif')>
-                        Figuratif
-                    </option>
+                                <select name="style" class="form-control form-control-lg">
+                                    <option value="">-- Style peinture --</option>
 
-                    <option value="street_art"
-                        @selected(old('style', $oeuvre->style) == 'street_art')>
-                        Street Art
-                    </option>
+                                    <option value="abstrait" @selected(old('style', $oeuvre->style) == 'abstrait')>Abstrait</option>
+                                    <option value="figuratif" @selected(old('style', $oeuvre->style) == 'figuratif')>Figuratif</option>
+                                    <option value="street_art" @selected(old('style', $oeuvre->style) == 'street_art')>Street Art</option>
+                                    <option value="expressionnisme" @selected(old('style', $oeuvre->style) == 'expressionnisme')>Expressionnisme</option>
+                                    <option value="minimalisme" @selected(old('style', $oeuvre->style) == 'minimalisme')>Minimalisme</option>
+                                    <option value="surrealiste" @selected(old('style', $oeuvre->style) == 'surrealiste')>Surréalisme</option>
+                                    <option value="pop_art" @selected(old('style', $oeuvre->style) == 'pop_art')>Pop Art</option>
+                                    <option value="realiste" @selected(old('style', $oeuvre->style) == 'realiste')>Réaliste</option>
+                                </select>
+                            </div>
 
-                    <option value="expressionnisme"
-                        @selected(old('style', $oeuvre->style) == 'expressionnisme')>
-                        Expressionnisme
-                    </option>
+                            {{-- PRIX --}}
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold">Prix (€)</label>
+                                <input class="form-control form-control-lg"
+                                       name="prix"
+                                       value="{{ old('prix', $oeuvre->prix) }}">
+                            </div>
 
-                    <option value="minimalisme"
-                        @selected(old('style', $oeuvre->style) == 'minimalisme')>
-                        Minimalisme
-                    </option>
+                            {{-- DIMENSIONS --}}
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Largeur (cm)</label>
+                                    <input class="form-control form-control-lg"
+                                           name="largeur"
+                                           value="{{ old('largeur', $oeuvre->largeur) }}">
+                                </div>
 
-                    <option value="surrealiste"
-                        @selected(old('style', $oeuvre->style) == 'surrealiste')>
-                        Surréalisme
-                    </option>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Hauteur (cm)</label>
+                                    <input class="form-control form-control-lg"
+                                           name="hauteur"
+                                           value="{{ old('hauteur', $oeuvre->hauteur) }}">
+                                </div>
+                            </div>
 
-                    <option value="pop_art"
-                        @selected(old('style', $oeuvre->style) == 'pop_art')>
-                        Pop Art
-                    </option>
+                            {{-- DESCRIPTION --}}
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold">Description</label>
+                                <textarea class="form-control"
+                                          rows="5"
+                                          name="description">{{ old('description', $oeuvre->description) }}</textarea>
+                            </div>
 
-                    <option value="realiste"
-                        @selected(old('style', $oeuvre->style) == 'realiste')>
-                        Réaliste
-                    </option>
+                            {{-- BOUTONS --}}
+                            <div class="d-grid">
+                                <button class="btn btn-dark btn-lg rounded-3">
+                                    Sauvegarder les modifications
+                                </button>
+                            </div>
 
-                </select>
+                        </form>
+
+                    </div>
+                </div>
 
             </div>
-
-            {{-- PRIX --}}
-            <input class="form-control mb-2"
-                   name="prix"
-                   value="{{ old('prix', $oeuvre->prix) }}">
-
-            {{-- DIMENSIONS --}}
-            <input class="form-control mb-2"
-                   name="largeur"
-                   value="{{ old('largeur', $oeuvre->largeur) }}">
-
-            <input class="form-control mb-2"
-                   name="hauteur"
-                   value="{{ old('hauteur', $oeuvre->hauteur) }}">
-
-            {{-- DESCRIPTION --}}
-            <textarea class="form-control mb-3"
-                      name="description">{{ old('description', $oeuvre->description) }}</textarea>
-
-            <button class="btn btn-success w-100">
-                Sauvegarder
-            </button>
-
-        </form>
+        </div>
 
     </div>
 

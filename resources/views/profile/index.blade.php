@@ -14,7 +14,6 @@
                                 Informations personnelles
                             </a>
                         </li>
-                        <li><a href="/profile/security">Sécurité</a></li>
                         <li><a href="/profile/favorites">Favoris</a></li>
 
                         {{-- Client — Demande admin --}}

@@ -145,24 +145,28 @@
 
                 <div class="col-lg-3 col-md-6">
 
-                    <div class="home-card artist-card text-center">
+                    <a href="{{ route('artistes.oeuvres', $artist->id) }}"
+                       style="text-decoration:none; color:inherit;">
 
-                        @if($artist->profile_photo)
-                            <img src="{{ asset('storage/'.$artist->profile_photo) }}"
-                                 class="artist-avatar">
-                        @else
-                            <img src="https://ui-avatars.com/api/?name={{ urlencode($artist->name) }}"
-                                 class="artist-avatar">
-                        @endif
+                        <div class="home-card artist-card text-center">
 
-                        <h5 class="mt-3">
-                            {{ $artist->name }}
-                        </h5>
+                            @if($artist->profile_photo)
+                                <img src="{{ asset('storage/'.$artist->profile_photo) }}"
+                                     class="artist-avatar">
+                            @else
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode($artist->name) }}"
+                                     class="artist-avatar">
+                            @endif
 
-                        <p>Art contemporain</p>
+                            <h5 class="mt-3">
+                                {{ $artist->name }}
+                            </h5>
 
-                    </div>
+                            <p>Art contemporain</p>
 
+                        </div>
+
+                    </a>
                 </div>
 
             @endforeach

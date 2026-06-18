@@ -89,9 +89,10 @@
                     <div class="artist-content">
 
                         <div class="artist-top-bar">
-                        <span class="artist-all-link">
-                            Toutes les œuvres →
-                        </span>
+                            <a href="{{ route('artistes.oeuvres', $artiste->id) }}"
+                               class="artist-all-link text-decoration-none">
+                                Toutes les œuvres →
+                            </a>
                         </div>
 
                         <div class="artist-right">

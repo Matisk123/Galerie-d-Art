@@ -5,65 +5,42 @@
     <div class="oeuvres-page">
 
         <div class="oeuvres-hero">
-            <span class="badge-oeuvres">Collection de la galerie</span>
 
-            <h1>Œuvres & objets d’art</h1>
+            <span class="badge-oeuvres">
+                Artiste
+            </span>
+
+            {{-- PROFIL ARTISTE --}}
+            <div class="d-flex align-items-center gap-3 mt-3 mb-3">
+
+                @if($user->profile_photo)
+                    <img src="{{ asset('storage/'.$user->profile_photo) }}"
+                         class="rounded-circle"
+                         style="width:80px;height:80px;object-fit:cover;">
+                @else
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}"
+                         class="rounded-circle"
+                         style="width:80px;height:80px;">
+                @endif
+
+                <div>
+                    <h1 class="mb-0">
+                        {{ $user->name }}
+                    </h1>
+
+                    <p class="mb-0 text-muted">
+                        Artiste / Vendeur
+                    </p>
+                </div>
+
+            </div>
 
             <p>
-                Découvrez un univers varié : peintures, sculptures, céramiques,
-                objets décoratifs et créations uniques.
+                Découvrez toutes les créations publiées par cet artiste.
             </p>
-        </div>
-
-        {{-- CATEGORIES --}}
-        <div class="oeuvres-categories">
-
-            <a href="{{ route('oeuvres') }}"
-               class="category-card text-decoration-none {{ !request('categorie') ? 'active' : '' }}">
-                Toutes les œuvres
-            </a>
-
-            @foreach($categories as $cat)
-                <a href="{{ route('oeuvres', ['categorie' => $cat]) }}"
-                   class="category-card {{ request('categorie') == $cat ? 'active' : '' }}">
-                    {{ $cat }}
-                </a>
-            @endforeach
 
         </div>
 
-        {{-- SEARCH --}}
-        <form method="GET" action="{{ route('oeuvres') }}" class="oeuvres-filters">
-
-            <input type="text"
-                   id="search-input"
-                   name="search"
-                   value="{{ request('search') }}"
-                   class="form-control"
-                   placeholder="Rechercher une œuvre...">
-
-            <select name="categorie" class="form-control mt-2">
-                <option value="">Toutes catégories</option>
-
-                @foreach($categories as $cat)
-                    <option value="{{ $cat }}"
-                        @selected(request('categorie') == $cat)>
-                        {{ $cat }}
-                    </option>
-                @endforeach
-            </select>
-
-            <button class="btn btn-primary mt-2">
-                Rechercher
-            </button>
-
-        </form>
-
-        <div id="suggestions-box"
-             style="position:absolute; background:white; border:1px solid #ddd; z-index:999; width:100%;">
-        </div>
-
-        {{-- LIST --}}
         {{-- LIST --}}
         <div class="row g-4 mt-4">
 
