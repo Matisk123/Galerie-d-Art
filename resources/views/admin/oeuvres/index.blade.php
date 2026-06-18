@@ -44,6 +44,9 @@
 
                             <div class="art-details">
                                 {{ $oeuvre->categorie }}
+                                @if($oeuvre->style)
+                                    {{ $oeuvre->style }}
+                                @endif
                             </div>
 
                             <div class="artist-work-footer">

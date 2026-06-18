@@ -78,11 +78,12 @@ Route::get('/expositions', function () {
 
 Route::middleware('auth')->group(function () {
 
+    Route::post('/favorites/{oeuvre}', [FavoriteController::class, 'toggle'])
+        ->name('favorites.toggle');
+
     Route::get('/profile/favorites', [FavoriteController::class, 'index'])
         ->name('favorites.index');
 
-    Route::post('/favorites/{oeuvre}', [FavoriteController::class, 'toggle'])
-        ->name('favorites.toggle');
 });
 
 Route::middleware(['auth', 'role:admin,super_admin'])->group(function () {
@@ -90,3 +91,16 @@ Route::middleware(['auth', 'role:admin,super_admin'])->group(function () {
     Route::get('/admin/statistiques', [StatsController::class, 'index'])
         ->name('admin.stats');
 });
+
+Route::get('/oeuvres/search/suggestions', [OeuvreController::class, 'searchSuggestions'])
+    ->name('oeuvres.search.suggestions');
+
+Route::get('/admin/oeuvres/{oeuvre}', [OeuvreController::class, 'show'])
+    ->name('admin.oeuvres.show')
+    ->middleware(['auth', 'role:admin,super_admin']);
+
+Route::get('/oeuvres/{oeuvre}', [OeuvreController::class, 'showPublic'])
+    ->name('oeuvres.show');
+
+Route::get('/peintures/search/suggestions', [OeuvreController::class, 'peintureSuggestions'])
+    ->name('peintures.search.suggestions');

@@ -67,6 +67,9 @@
 
                         <p class="mb-2">
                             <strong>Catégorie :</strong> {{ $oeuvre->categorie }}
+                            @if($oeuvre->style)
+                                {{ $oeuvre->style }}
+                            @endif
                         </p>
 
                         <p class="mb-2">

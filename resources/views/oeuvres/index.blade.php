@@ -5,10 +5,7 @@
     <div class="oeuvres-page">
 
         <div class="oeuvres-hero">
-
-        <span class="badge-oeuvres">
-            Collection de la galerie
-        </span>
+            <span class="badge-oeuvres">Collection de la galerie</span>
 
             <h1>Œuvres & objets d’art</h1>
 
@@ -16,40 +13,57 @@
                 Découvrez un univers varié : peintures, sculptures, céramiques,
                 objets décoratifs et créations uniques.
             </p>
-
         </div>
 
+        {{-- CATEGORIES --}}
         <div class="oeuvres-categories">
 
-            @php
-                $categories = [
-                    "Peintures", "Sculptures", "Céramiques",
-                    "Bouteilles", "Assiettes", "Photographies", "Objets d’art"
-                ];
-            @endphp
+            <a href="{{ route('oeuvres') }}"
+               class="category-card text-decoration-none {{ !request('categorie') ? 'active' : '' }}">
+                Toutes les œuvres
+            </a>
 
             @foreach($categories as $cat)
-                <div class="category-card">
+                <a href="{{ route('oeuvres', ['categorie' => $cat]) }}"
+                   class="category-card {{ request('categorie') == $cat ? 'active' : '' }}">
                     {{ $cat }}
-                </div>
+                </a>
             @endforeach
 
         </div>
 
-        <div class="oeuvres-filters">
+        {{-- SEARCH --}}
+        <form method="GET" action="{{ route('oeuvres') }}" class="oeuvres-filters">
 
-            <input type="text" class="form-control"
+            <input type="text"
+                   id="search-input"
+                   name="search"
+                   value="{{ request('search') }}"
+                   class="form-control"
                    placeholder="Rechercher une œuvre...">
 
-            <select class="form-control">
-                <option>Toutes les catégories</option>
-                <option>Peintures</option>
-                <option>Sculptures</option>
-                <option>Céramiques</option>
+            <select name="categorie" class="form-control mt-2">
+                <option value="">Toutes catégories</option>
+
+                @foreach($categories as $cat)
+                    <option value="{{ $cat }}"
+                        @selected(request('categorie') == $cat)>
+                        {{ $cat }}
+                    </option>
+                @endforeach
             </select>
 
+            <button class="btn btn-primary mt-2">
+                Rechercher
+            </button>
+
+        </form>
+
+        <div id="suggestions-box"
+             style="position:absolute; background:white; border:1px solid #ddd; z-index:999; width:100%;">
         </div>
 
+        {{-- LIST --}}
         <div class="row g-4 mt-4">
 
             @forelse($oeuvres as $oeuvre)
@@ -58,41 +72,21 @@
 
                     <div class="art-item">
 
-                        <div class="art-image-wrapper">
-                            <a href="{{ route('oeuvres.show', $oeuvre) }}">
-                                @if($oeuvre->image)
-                                    <img src="{{ asset('storage/'.$oeuvre->image) }}"
-                                         class="art-item-image">
-                                @endif
-                            </a>
-                        </div>
+                        <a href="{{ route('oeuvres.show', $oeuvre) }}">
+                            <img src="{{ asset('storage/'.$oeuvre->image) }}" class="art-item-image">
+                        </a>
 
                         <div class="art-item-info">
 
-                            <div class="art-title">
-                                {{ $oeuvre->titre }}
-                            </div>
+                            <div class="art-title">{{ $oeuvre->titre }}</div>
 
-                            <div class="art-artist">
-                                {{ $oeuvre->artist_name }}
-                            </div>
+                            <div class="art-artist">{{ $oeuvre->artist_name }}</div>
 
                             <div class="art-details">
                                 {{ $oeuvre->categorie }}
-                                • {{ $oeuvre->largeur }} x {{ $oeuvre->hauteur }} cm
-                            </div>
-
-                            <div class="artist-work-footer d-flex justify-content-between align-items-center">
-
-                                <div class="art-price">
-                                    {{ number_format($oeuvre->prix,0,',',' ') }} €
-                                </div>
-
-                                <div class="favorite-btn {{ auth()->check() && auth()->user()->favorites->contains($oeuvre->id) ? 'active' : '' }}"
-                                     data-id="{{ $oeuvre->id }}">
-                                    ♥
-                                </div>
-
+                                @if($oeuvre->style)
+                                    {{ $oeuvre->style }}
+                                @endif
                             </div>
 
                         </div>

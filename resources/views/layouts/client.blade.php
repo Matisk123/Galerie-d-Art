@@ -1,9 +1,7 @@
 <!DOCTYPE html>
-
 <html lang="fr">
 
 <head>
-
     <meta charset="UTF-8">
     <title>Galerie d'art</title>
 
@@ -13,81 +11,44 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
-
 <body>
 
 <div class="d-flex">
 
-
+    {{-- SIDEBAR --}}
     <div class="sidebar text-white">
 
         <h4>Galerie</h4>
 
         <ul class="nav flex-column">
 
-            <li class="nav-item mb-2">
-                <a class="nav-link" href="/menu">
-                    Accueil
-                </a>
-            </li>
-
-            <li class="nav-item mb-2">
-                <a class="nav-link" href="/oeuvres">
-                    Œuvres
-                </a>
-            </li>
-
-            <li class="nav-item mb-2">
-                <a class="nav-link" href="/peintures">
-                    Peinture
-                </a>
-            </li>
-
-            <li class="nav-item mb-2">
-                <a class="nav-link" href="/artistes">
-                    Artistes
-                </a>
-            </li>
-
-            <li class="nav-item mb-2">
-                <a class="nav-link" href="/expositions">
-                    Expositions
-                </a>
-            </li>
+            <li class="nav-item mb-2"><a class="nav-link" href="/menu">Accueil</a></li>
+            <li class="nav-item mb-2"><a class="nav-link" href="/oeuvres">Œuvres</a></li>
+            <li class="nav-item mb-2"><a class="nav-link" href="/peintures">Peinture</a></li>
+            <li class="nav-item mb-2"><a class="nav-link" href="/artistes">Artistes</a></li>
+            <li class="nav-item mb-2"><a class="nav-link" href="/expositions">Expositions</a></li>
 
         </ul>
 
-
+        {{-- PROFILE --}}
         <a href="/profile" class="profile-box text-white text-decoration-none position-relative">
 
             @if(Auth::user()->profile_photo)
-
                 <img src="{{ asset('storage/'.Auth::user()->profile_photo) }}" class="profile-photo">
-
             @else
-
                 <img src="https://via.placeholder.com/45" class="profile-photo">
-
             @endif
 
-                @if(Auth::user()->notifications()->where('read',false)->count() > 0)
-
-                    <span class="notif-dot"></span>
-
-                @endif
+            @if(Auth::user()->notifications()->where('read',false)->count() > 0)
+                <span class="notif-dot"></span>
+            @endif
 
             <div class="profile-info">
 
-                <div class="profile-name">
-                    {{ Auth::user()->name }}
-                </div>
-
-                <div class="profile-email">
-                    {{ Auth::user()->email }}
-                </div>
+                <div class="profile-name">{{ Auth::user()->name }}</div>
+                <div class="profile-email">{{ Auth::user()->email }}</div>
 
                 <div class="profile-role">
-
                     @if(Auth::user()->hasRole('super_admin'))
                         Super Admin
                     @elseif(Auth::user()->hasRole('admin'))
@@ -95,161 +56,55 @@
                     @else
                         Client
                     @endif
-
                 </div>
 
             </div>
 
         </a>
 
-
         <form method="POST" action="{{ route('logout') }}">
-
             @csrf
-
-            <button class="logout-btn w-100">
-                Déconnexion
-            </button>
-
+            <button class="logout-btn w-100">Déconnexion</button>
         </form>
 
-
+        {{-- THEME --}}
         <div class="theme-switch">
-
             <span>Theme</span>
-
             <label class="switch">
-
                 <input type="checkbox" id="theme-toggle">
-
                 <span class="slider"></span>
-
             </label>
-
         </div>
 
     </div>
 
-
+    {{-- CONTENT --}}
     <div class="content">
-
         @yield('content')
-
     </div>
 
-
 </div>
-
-
-<script>
-
-    const toggle = document.getElementById("theme-toggle");
-
-    if(localStorage.getItem("theme") === "dark"){
-        document.body.classList.add("dark-mode");
-        toggle.checked = true;
-    }
-
-    toggle.addEventListener("change", function(){
-
-        if(this.checked){
-            document.body.classList.add("dark-mode");
-            localStorage.setItem("theme","dark");
-        }else{
-            document.body.classList.remove("dark-mode");
-            localStorage.setItem("theme","light");
-        }
-
-    });
-
-</script>
-
-<script>
-
-    document.querySelectorAll('.like-btn').forEach(button => {
-
-        button.addEventListener('click', function(e){
-
-            e.preventDefault();
-
-            this.classList.toggle('active');
-
-            const icon = this.querySelector('i');
-
-            if(this.classList.contains('active')){
-                icon.classList.remove('bi-heart');
-                icon.classList.add('bi-heart-fill');
-            }else{
-                icon.classList.remove('bi-heart-fill');
-                icon.classList.add('bi-heart');
-            }
-
-        });
-
-    });
-
-</script>
-
-<script>
-    document.addEventListener('click', async function (e) {
-        const btn = e.target.closest('.favorite-btn');
-        if (!btn) return;
-
-        const oeuvreId = btn.dataset.id;
-
-        const res = await fetch(`/favorites/${oeuvreId}`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                'Content-Type': 'application/json'
-            }
-        });
-
-        const data = await res.json();
-
-        btn.classList.toggle('active', data.status === 'added');
-    });
-</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
 
-        document.querySelectorAll('.favorite-btn').forEach(button => {
+        const toggle = document.getElementById("theme-toggle");
 
-            button.addEventListener('click', async function (e) {
-                e.preventDefault();
-                e.stopPropagation();
+        if (!toggle) return;
 
-                const oeuvreId = this.dataset.id;
-                const buttonElement = this;
+        if (localStorage.getItem("theme") === "dark") {
+            document.body.classList.add("dark-mode");
+            toggle.checked = true;
+        }
 
-                try {
-                    const response = await fetch(`/oeuvres/${oeuvreId}/favorite`, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        }
-                    });
-
-                    const data = await response.json();
-
-                    if (data.success) {
-                        buttonElement.classList.toggle('active');
-
-                        buttonElement.classList.add('animate-like');
-
-                        setTimeout(() => {
-                            buttonElement.classList.remove('animate-like');
-                        }, 300);
-                    }
-
-                } catch (error) {
-                    console.error('Erreur favori:', error);
-                }
-            });
-
+        toggle.addEventListener("change", function () {
+            if (this.checked) {
+                document.body.classList.add("dark-mode");
+                localStorage.setItem("theme", "dark");
+            } else {
+                document.body.classList.remove("dark-mode");
+                localStorage.setItem("theme", "light");
+            }
         });
 
     });
@@ -262,9 +117,11 @@
 
             btn.addEventListener('click', async function (e) {
                 e.preventDefault();
-                e.stopPropagation(); // IMPORTANT pour ne pas déclencher le lien parent
+                e.stopPropagation();
 
                 const oeuvreId = this.dataset.id;
+
+                if (!oeuvreId) return;
 
                 try {
                     const response = await fetch(`/favorites/${oeuvreId}`, {
@@ -298,6 +155,98 @@
             el.classList.add('pop');
             setTimeout(() => el.classList.remove('pop'), 300);
         }
+
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const categorie = document.getElementById('categorie');
+        const styleBox = document.getElementById('style-box');
+
+        if (!categorie || !styleBox) return;
+
+        function toggleStyle() {
+            const value = (categorie.value || '').toLowerCase();
+            styleBox.style.display = (value === 'peinture') ? 'block' : 'none';
+        }
+
+        categorie.addEventListener('change', toggleStyle);
+        toggleStyle();
+
+    });
+</script>
+
+<script>
+    document.getElementById('search-input').addEventListener('keyup', function () {
+
+        let query = this.value;
+
+        if (query.length < 2) {
+            document.getElementById('suggestions-box').innerHTML = '';
+            return;
+        }
+
+        fetch("{{ route('peintures.search.suggestions') }}?search=" + query)
+            .then(response => response.json())
+            .then(data => {
+
+                let box = document.getElementById('suggestions-box');
+                box.innerHTML = '';
+
+                data.forEach(item => {
+                    let div = document.createElement('div');
+
+                    div.innerHTML = item;
+                    div.style.padding = "8px";
+                    div.style.cursor = "pointer";
+
+                    div.onclick = function () {
+                        document.getElementById('search-input').value = item;
+                        box.innerHTML = '';
+                    };
+
+                    box.appendChild(div);
+                });
+
+            });
+
+    });
+</script>
+
+<script>
+    document.getElementById('search-input').addEventListener('keyup', function () {
+
+        let query = this.value;
+
+        if (query.length < 2) {
+            document.getElementById('suggestions-box').innerHTML = '';
+            return;
+        }
+
+        fetch("{{ route('oeuvres.search.suggestions') }}?search=" + query)
+            .then(res => res.json())
+            .then(data => {
+
+                let box = document.getElementById('suggestions-box');
+                box.innerHTML = '';
+
+                data.forEach(item => {
+                    let div = document.createElement('div');
+                    div.innerHTML = item;
+                    div.style.padding = "8px";
+                    div.style.cursor = "pointer";
+
+                    div.onclick = function () {
+                        document.getElementById('search-input').value = item;
+                        box.innerHTML = '';
+                    };
+
+                    box.appendChild(div);
+                });
+
+            });
 
     });
 </script>

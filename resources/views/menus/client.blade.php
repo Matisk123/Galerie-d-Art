@@ -103,8 +103,11 @@
                             </div>
 
                             <div class="art-details">
-                                {{ $oeuvre->categorie }} •
-                                {{ $oeuvre->largeur }} x {{ $oeuvre->hauteur }} cm
+                                {{ $oeuvre->categorie }}
+                                @if($oeuvre->style)
+                                    {{ $oeuvre->style }}
+                                @endif
+                                • {{ $oeuvre->largeur }} x {{ $oeuvre->hauteur }} cm
                             </div>
 
                             <div class="artist-work-footer d-flex justify-content-between align-items-center">

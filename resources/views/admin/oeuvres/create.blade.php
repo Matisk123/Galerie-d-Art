@@ -8,9 +8,7 @@
 
             <div>
                 <h2>Ajouter une œuvre</h2>
-                <p class="text-muted mb-0">
-                    Créez une nouvelle œuvre dans votre galerie.
-                </p>
+                <p class="text-muted mb-0">Créez une nouvelle œuvre dans votre galerie.</p>
             </div>
 
             <a href="{{ route('admin.oeuvres') }}" class="btn btn-outline-primary">
@@ -21,75 +19,45 @@
 
         <div class="profile-card p-4">
 
-            <form method="POST"
-                  action="{{ route('admin.oeuvres.store') }}"
-                  enctype="multipart/form-data">
-
+            <form method="POST" action="{{ route('admin.oeuvres.store') }}" enctype="multipart/form-data">
                 @csrf
 
-                {{-- TITRE --}}
-                <div class="mb-3">
-                    <label class="form-label">Titre de l'œuvre</label>
-                    <input type="text" name="titre" class="form-control" required>
-                </div>
+                <input type="text" name="titre" class="form-control mb-2" placeholder="Titre" required>
 
-                {{-- ARTISTE --}}
-                <div class="mb-3">
-                    <label class="form-label">Nom de l'artiste</label>
-                    <input type="text" name="artist_name" class="form-control" required>
-                </div>
+                <input type="text" name="artist_name" class="form-control mb-2" placeholder="Artiste" required>
 
-                {{-- CATEGORIE --}}
-                <div class="mb-3">
-                    <label class="form-label">Catégorie</label>
+                <select name="categorie" id="categorie" class="form-control mb-2" required>
+                    <option value="peinture">Peinture</option>
+                    <option value="sculpture">Sculpture</option>
+                    <option value="ceramique">Céramique</option>
+                    <option value="photographie">Photographie</option>
+                </select>
 
-                    <select name="categorie" class="form-control" required>
-                        <option>Peinture</option>
-                        <option>Sculpture</option>
-                        <option>Céramique</option>
-                        <option>Bouteille décorative</option>
-                        <option>Assiette décorative</option>
-                        <option>Photographie</option>
+                <div id="style-box" class="mb-2">
+                    <select name="style" class="form-control">
+                        <option value="">-- Choisir un style --</option>
+                        <option value="abstrait">Abstrait</option>
+                        <option value="figuratif">Figuratif</option>
+                        <option value="street_art">Street Art</option>
+                        <option value="expressionnisme">Expressionnisme</option>
+                        <option value="minimalisme">Minimalisme</option>
+                        <option value="surrealiste">Surréalisme</option>
+                        <option value="pop_art">Pop Art</option>
+                        <option value="realiste">Réaliste</option>
                     </select>
                 </div>
 
-                {{-- DIMENSIONS --}}
-                <div class="row">
+                <input type="number" name="prix" class="form-control mb-2" placeholder="Prix">
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Largeur (cm)</label>
-                        <input type="number" name="largeur" class="form-control">
-                    </div>
+                <input type="number" name="largeur" class="form-control mb-2" placeholder="Largeur">
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Hauteur (cm)</label>
-                        <input type="number" name="hauteur" class="form-control">
-                    </div>
+                <input type="number" name="hauteur" class="form-control mb-2" placeholder="Hauteur">
 
-                </div>
+                <input type="file" name="image" class="form-control mb-2">
 
-                {{-- PRIX --}}
-                <div class="mb-3">
-                    <label class="form-label">Prix (€)</label>
-                    <input type="number" name="prix" class="form-control" required>
-                </div>
+                <textarea name="description" class="form-control mb-2" placeholder="Description"></textarea>
 
-                {{-- IMAGE --}}
-                <div class="mb-3">
-                    <label class="form-label">Image</label>
-                    <input type="file" name="image" class="form-control">
-                </div>
-
-                {{-- DESCRIPTION --}}
-                <div class="mb-3">
-                    <label class="form-label">Description</label>
-                    <textarea name="description" class="form-control" rows="4"></textarea>
-                </div>
-
-                {{-- SUBMIT --}}
-                <button class="btn btn-primary w-100">
-                    Ajouter l'œuvre
-                </button>
+                <button class="btn btn-primary w-100">Ajouter</button>
 
             </form>
 

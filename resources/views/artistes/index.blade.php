@@ -115,6 +115,9 @@
 
                                     <div class="artist-work-details">
                                         {{ $oeuvre->categorie }}
+                                        @if($oeuvre->style)
+                                            {{ $oeuvre->style }}
+                                        @endif
                                     </div>
 
                                     <div class="art-footer">

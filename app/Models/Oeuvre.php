@@ -13,6 +13,7 @@ class Oeuvre extends Model
         'description',
         'artist_name',
         'categorie',
+        'style',
         'largeur',
         'hauteur',
         'prix',
@@ -33,5 +34,15 @@ class Oeuvre extends Model
     public function favorites()
     {
         return $this->hasMany(\App\Models\Favorite::class);
+    }
+
+    public function getCategorieAttribute($value)
+    {
+        return ucwords($value);
+    }
+
+    public function getStyleAttribute($value)
+    {
+        return $value ? ucwords($value) : null;
     }
 }

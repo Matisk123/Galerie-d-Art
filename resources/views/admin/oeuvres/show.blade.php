@@ -35,7 +35,12 @@
 
                 <div class="card p-4">
 
-                    <p><strong>Catégorie :</strong> {{ $oeuvre->categorie }}</p>
+                    <p><strong>Catégorie :</strong>
+                        {{ $oeuvre->categorie }}
+                        @if($oeuvre->style)
+                            {{ $oeuvre->style }}
+                        @endif
+                    </p>
 
                     <p><strong>Dimensions :</strong>
                         {{ $oeuvre->largeur }} x {{ $oeuvre->hauteur }} cm

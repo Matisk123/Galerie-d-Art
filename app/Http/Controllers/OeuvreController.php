@@ -3,15 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Oeuvre;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class OeuvreController extends Controller
 {
-
     public function index()
     {
         $oeuvres = Oeuvre::where('user_id', Auth::id())
@@ -32,6 +28,7 @@ class OeuvreController extends Controller
             'titre' => 'required|string|max:255',
             'artist_name' => 'required|string|max:255',
             'categorie' => 'required|string',
+            'style' => 'nullable|string',
             'prix' => 'required|numeric',
             'largeur' => 'nullable|numeric',
             'hauteur' => 'nullable|numeric',
@@ -39,7 +36,7 @@ class OeuvreController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        $imagePath = $request->hasFile('image')
+        $imagePath = $request->file('image')
             ? $request->file('image')->store('oeuvres', 'public')
             : null;
 
@@ -47,7 +44,8 @@ class OeuvreController extends Controller
             'user_id' => Auth::id(),
             'titre' => $request->titre,
             'artist_name' => $request->artist_name,
-            'categorie' => $request->categorie,
+            'categorie' => strtolower(trim($request->categorie)),
+            'style' => $request->style ? strtolower(trim($request->style)) : null,
             'prix' => $request->prix,
             'largeur' => $request->largeur,
             'hauteur' => $request->hauteur,
@@ -60,108 +58,95 @@ class OeuvreController extends Controller
             ->with('success', 'Œuvre ajoutée avec succès');
     }
 
-    private function authorizeOeuvre(Oeuvre $oeuvre)
-    {
-        $user = Auth::user();
-
-        if ($user->hasRole('super_admin')) {
-            return true;
-        }
-
-        if ($oeuvre->user_id !== $user->id) {
-            abort(403);
-        }
-
-        return true;
-    }
-
-    public function show(Oeuvre $oeuvre)
-    {
-        $this->authorizeOeuvre($oeuvre);
-        return view('admin.oeuvres.show', compact('oeuvre'));
-    }
-
     public function edit(Oeuvre $oeuvre)
     {
-        $this->authorizeOeuvre($oeuvre);
         return view('admin.oeuvres.edit', compact('oeuvre'));
     }
 
     public function update(Request $request, Oeuvre $oeuvre)
     {
-        $this->authorizeOeuvre($oeuvre);
-
         $request->validate([
             'titre' => 'required|string',
             'artist_name' => 'required|string',
             'categorie' => 'required|string',
+            'style' => 'nullable|string',
             'prix' => 'required|numeric',
             'largeur' => 'nullable|numeric',
             'hauteur' => 'nullable|numeric',
             'description' => 'nullable|string',
         ]);
 
-        $oeuvre->update($request->only([
-            'titre',
-            'artist_name',
-            'categorie',
-            'prix',
-            'largeur',
-            'hauteur',
-            'description',
-        ]));
+        $oeuvre->update([
+            'titre' => $request->titre,
+            'artist_name' => $request->artist_name,
+            'categorie' => ucwords(trim($request->categorie)),
+            'style' => $request->style ? ucwords(trim($request->style)) : null,
+            'prix' => $request->prix,
+            'largeur' => $request->largeur,
+            'hauteur' => $request->hauteur,
+            'description' => $request->description,
+        ]);
 
-        return redirect()->route('admin.oeuvres.show', $oeuvre)
+        return redirect()->route('admin.oeuvres')
             ->with('success', 'Œuvre mise à jour');
     }
 
-    public function destroy(Oeuvre $oeuvre)
+    public function publicIndex(Request $request)
     {
-        $this->authorizeOeuvre($oeuvre);
+        $query = Oeuvre::where('is_published', true);
 
-        if ($oeuvre->image) {
-            Storage::disk('public')->delete($oeuvre->image);
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('titre', 'like', "%{$request->search}%")
+                    ->orWhere('artist_name', 'like', "%{$request->search}%");
+            });
         }
 
-        $oeuvre->delete();
+        if ($request->filled('categorie')) {
+            $query->where('categorie', $request->categorie);
+        }
 
-        return redirect()->route('admin.oeuvres')
-            ->with('success', 'Œuvre supprimée');
+        $oeuvres = $query->latest()->paginate(16);
+
+        $categories = Oeuvre::where('is_published', true)
+            ->pluck('categorie')
+            ->unique();
+
+        return view('oeuvres.index', compact('oeuvres', 'categories'));
     }
 
-    public function publicIndex()
+    public function peintures(Request $request)
     {
-        $oeuvres = Oeuvre::where('is_published', true)
-            ->latest()
-            ->paginate(16);
+        $query = Oeuvre::where('is_published', true)
+            ->whereRaw('LOWER(categorie) = ?', ['peinture']);
 
-        return view('oeuvres.index', compact('oeuvres'));
+        if ($request->filled('style')) {
+            $query->whereRaw('LOWER(style) = ?', [
+                strtolower($request->style)
+            ]);
+        }
+
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('titre', 'like', "%{$request->search}%")
+                    ->orWhere('artist_name', 'like', "%{$request->search}%");
+            });
+        }
+
+        $oeuvres = $query->latest()->paginate(16);
+
+        $styles = Oeuvre::where('is_published', true)
+            ->whereNotNull('style')
+            ->whereRaw('LOWER(categorie) = ?', ['peinture'])
+            ->distinct()
+            ->pluck('style');
+
+        return view('peintures.index', compact('oeuvres', 'styles'));
     }
 
-    public function peintures()
+    public function show(Oeuvre $oeuvre)
     {
-        $oeuvres = Oeuvre::where('is_published', true)
-            ->where('categorie', 'Peinture')
-            ->latest()
-            ->paginate(16);
-
-        return view('peintures.index', compact('oeuvres'));
-    }
-
-    public function artistes()
-    {
-        $artistes = User::whereHas('oeuvres', function ($q) {
-            $q->where('is_published', true);
-        })
-            ->with(['oeuvres' => function ($q) {
-                $q->where('is_published', true);
-            }])
-            ->withCount(['oeuvres' => function ($q) {
-                $q->where('is_published', true);
-            }])
-            ->get();
-
-        return view('artistes.index', compact('artistes'));
+        return view('admin.oeuvres.show', compact('oeuvre'));
     }
 
     public function showPublic(Oeuvre $oeuvre)
@@ -170,66 +155,44 @@ class OeuvreController extends Controller
             abort(404);
         }
 
-        $oeuvre->increment('total_views');
-
-        if (Auth::check()) {
-            $alreadyViewed = DB::table('oeuvre_views')
-                ->where('oeuvre_id', $oeuvre->id)
-                ->where('user_id', Auth::id())
-                ->exists();
-
-            if (!$alreadyViewed) {
-                DB::table('oeuvre_views')->insert([
-                    'oeuvre_id' => $oeuvre->id,
-                    'user_id' => Auth::id(),
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-
-                $oeuvre->increment('unique_views');
-            }
-        }
-
         return view('oeuvres.show', compact('oeuvre'));
     }
 
-    public function toggleFavorite(Oeuvre $oeuvre)
+    public function destroy(Oeuvre $oeuvre)
     {
-        $user = Auth::user();
-
-        $exists = $user->favorites()
-            ->where('oeuvre_id', $oeuvre->id)
-            ->exists();
-
-        if ($exists) {
-            $user->favorites()->detach($oeuvre->id);
-            return response()->json(['status' => 'removed']);
+        if ($oeuvre->image && \Storage::disk('public')->exists($oeuvre->image)) {
+            \Storage::disk('public')->delete($oeuvre->image);
         }
 
-        $user->favorites()->attach($oeuvre->id);
-        return response()->json(['status' => 'added']);
+        $oeuvre->delete();
+
+        return redirect()
+            ->route('admin.oeuvres')
+            ->with('success', 'Œuvre supprimée avec succès');
     }
 
-    public function toggleFavoriteAjax(Oeuvre $oeuvre)
+    public function peintureSuggestions(Request $request)
     {
-        $user = Auth::user();
-
-        $isFavorite = $user->favorites()
-            ->where('oeuvre_id', $oeuvre->id)
-            ->exists();
-
-        if ($isFavorite) {
-            $user->favorites()->detach($oeuvre->id);
-            $status = false;
-        } else {
-            $user->favorites()->attach($oeuvre->id);
-            $status = true;
+        if (!$request->search) {
+            return response()->json([]);
         }
 
-        return response()->json([
-            'success' => true,
-            'favorite' => $status,
-            'oeuvre_id' => $oeuvre->id
-        ]);
+        return Oeuvre::where('is_published', true)
+            ->whereRaw('LOWER(categorie) = ?', ['peinture'])
+            ->where('titre', 'like', "%{$request->search}%")
+            ->limit(1)
+            ->pluck('titre');
+    }
+
+    public function searchSuggestions(Request $request)
+    {
+        if (!$request->search) {
+            return response()->json([]);
+        }
+
+        return Oeuvre::where('is_published', true)
+            ->where('titre', 'like', "%{$request->search}%")
+            ->limit(5)
+            ->pluck('titre');
     }
 }
