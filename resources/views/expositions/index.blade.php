@@ -9,9 +9,9 @@
 
             <div class="exhibitions-hero-content">
 
-            <span class="hero-badge">
-                Événements artistiques
-            </span>
+                <span class="hero-badge">
+                    Événements artistiques
+                </span>
 
                 <h1>
                     Découvrez les expositions de la galerie
@@ -26,51 +26,43 @@
 
         </div>
 
-
         {{-- EXPOSITIONS EN COURS --}}
         <div class="section-header mt-5">
-
             <h2>Expositions en cours</h2>
-
         </div>
 
         <div class="row g-4">
 
-            @for($i = 1; $i <= 3; $i++)
+            @forelse($enCours as $expo)
 
                 <div class="col-lg-4">
 
-                    <div class="exhibition-card featured">
+                    <div class="exhibition-card featured h-100 shadow-sm">
 
-                        <img
-                            src="https://picsum.photos/700/450?random={{ $i }}"
-                            class="exhibition-image"
-                        >
+                        <div class="exhibition-image-wrapper">
+                            <img src="{{ asset('storage/'.$expo->image) }}"
+                                 class="exhibition-image">
+                        </div>
 
-                        <div class="exhibition-content">
+                        <div class="exhibition-content p-3">
 
-                        <span class="exhibition-status active">
-                            En cours
-                        </span>
+        <span class="exhibition-status active">
+            En cours
+        </span>
 
-                            <h4>
-                                Exposition {{ $i }}
-                            </h4>
+                            <h4 class="mt-2">{{ $expo->titre }}</h4>
 
-                            <p>
-                                Une immersion dans l'univers artistique contemporain,
-                                entre abstraction et modernité.
+                            <p class="text-muted">
+                                {{ \Illuminate\Support\Str::limit($expo->description, 120) }}
                             </p>
 
-                            <div class="exhibition-meta">
-
-                                <span>📍 Galerie Centrale</span>
-
-                                <span>📅 Jusqu'au 30 septembre</span>
-
+                            <div class="exhibition-meta small text-muted">
+                                <span>📍 {{ $expo->lieu }}</span><br>
+                                <span>📅 Jusqu’au {{ \Carbon\Carbon::parse($expo->date_fin)->format('d/m/Y') }}</span>
                             </div>
 
-                            <a href="#" class="btn btn-primary mt-3">
+                            <a href="{{ route('expositions.show', $expo) }}"
+                               class="btn btn-primary btn-sm mt-3 w-100">
                                 Découvrir
                             </a>
 
@@ -80,46 +72,41 @@
 
                 </div>
 
-            @endfor
+            @empty
+                <p>Aucune exposition en cours.</p>
+            @endforelse
 
         </div>
 
-
         {{-- PROCHAINEMENT --}}
         <div class="section-header mt-5">
-
             <h2>Prochainement</h2>
-
         </div>
 
         <div class="row g-4">
 
-            @for($i = 4; $i <= 7; $i++)
+            @forelse($aVenir as $expo)
 
                 <div class="col-md-6">
 
-                    <div class="upcoming-exhibition">
+                    <div class="upcoming-exhibition d-flex gap-3 p-3 shadow-sm">
 
-                        <img
-                            src="https://picsum.photos/500/300?random={{ $i }}"
-                            class="upcoming-image"
-                        >
+                        <img src="{{ asset('storage/'.$expo->image) }}"
+                             class="upcoming-image">
 
-                        <div class="upcoming-content">
+                        <div class="upcoming-content flex-grow-1">
 
-                        <span class="upcoming-date">
-                            Octobre 2026
-                        </span>
+                            <span class="upcoming-date badge bg-secondary">
+                                {{ \Carbon\Carbon::parse($expo->date_debut)->format('d/m/Y') }}
+                            </span>
 
-                            <h4>
-                                Horizons Modernes
-                            </h4>
+                            <h4 class="mt-2">{{ $expo->titre }}</h4>
 
-                            <p>
-                                Une nouvelle exposition consacrée aux talents émergents.
+                            <p class="text-muted">
+                                {{ \Illuminate\Support\Str::limit($expo->description, 100) }}
                             </p>
 
-                            <a href="#">
+                            <a href="{{ route('expositions.show', $expo) }}">
                                 En savoir plus →
                             </a>
 
@@ -129,33 +116,33 @@
 
                 </div>
 
-            @endfor
+            @empty
+                <p>Aucune exposition à venir.</p>
+            @endforelse
 
         </div>
-
 
         {{-- BANDEAU FINAL --}}
         <div class="exhibition-banner-large mt-5">
 
             <div>
 
-            <span class="exhibition-label">
-                À ne pas manquer
-            </span>
+                <span class="exhibition-label">
+                    Archives
+                </span>
 
                 <h2>
-                    Nuit des Arts Contemporains
+                    Expositions passées
                 </h2>
 
                 <p>
-                    Une soirée exceptionnelle réunissant artistes,
-                    performances et découvertes inédites.
+                    Retrouvez toutes les expositions déjà terminées.
                 </p>
 
             </div>
 
-            <a href="#" class="btn btn-light">
-                Réserver
+            <a href="{{ route('expositions.past') }}" class="btn btn-light">
+                Voir
             </a>
 
         </div>

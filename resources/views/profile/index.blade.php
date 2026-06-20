@@ -51,8 +51,11 @@
                                 </a>
                             </li>
                             <li><a href="/admin/statistiques">Statistiques des œuvres</a></li>
-                            <li><a href="/admin/expositions">Gestion des expositions</a></li>
-                        @endif
+                            <li>
+                                <a href="{{ route('admin.expositions') }}">
+                                    Gestion des expositions
+                                </a>
+                            </li>                        @endif
 
                         @if(Auth::user()->hasRole('super_admin'))
                             <li>
@@ -70,8 +73,11 @@
                                 </a>
                             </li>
                             <li><a href="/admin/statistiques">Statistiques des œuvres</a></li>
-                            <li><a href="/admin/expositions">Gestion des expositions</a></li>
-                        @endif
+                            <li>
+                                <a href="{{ route('admin.expositions') }}">
+                                    Gestion des expositions
+                                </a>
+                            </li>                        @endif
 
                     </ul>
                 </div>

@@ -2474,3 +2474,252 @@ body.dark-mode .search-item:hover {
     color: #fff;
 }
 
+.exhibition-page {
+    background: #f8f9fa;
+}
+
+/* HERO */
+.exhibition-hero {
+    position: relative;
+    height: 420px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    color: white;
+}
+
+.exhibition-hero-img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.exhibition-hero-placeholder {
+    width: 100%;
+    height: 100%;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.7),
+        rgba(0,0,0,0.2)
+    );
+}
+
+.hero-content {
+    position: relative;
+    padding: 30px;
+    z-index: 2;
+}
+
+.hero-content h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.hero-meta {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.badge {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(6px);
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+/* CARD */
+.exhibition-card {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+}
+
+.exhibition-description {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #444;
+}
+
+.exhibitions-hero {
+    background: linear-gradient(135deg, #111, #333);
+    color: white;
+    padding: 70px 20px;
+    text-align: center;
+}
+
+.hero-badge {
+    background: rgba(255,255,255,0.15);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+}
+
+.exhibition-card {
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    transition: transform 0.25s ease;
+}
+
+.exhibition-card:hover {
+    transform: translateY(-5px);
+}
+
+/* IMAGE */
+.exhibition-image-wrapper {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+    background: #eee;
+}
+
+.exhibition-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.exhibition-image-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #999;
+}
+
+/* overlay */
+.exhibition-overlay {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    color: white;
+}
+
+.status-badge.past {
+    background: #6c757d;
+}
+
+/* content */
+.exhibition-content {
+    padding: 15px;
+}
+
+.exhibition-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.exhibition-desc {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.exhibition-meta {
+    font-size: 0.85rem;
+    color: #555;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* empty */
+.empty-state {
+    padding: 60px 20px;
+    border: 1px dashed #ccc;
+    border-radius: 10px;
+}
+
+.exhibition-detail-card {
+    border-radius: 16px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.exhibition-cover img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+}
+
+/* DARK MODE */
+body.dark-mode .exhibition-detail-card {
+    background: #1e1e1e;
+    color: #f1f1f1;
+}
+
+body.dark-mode .text-muted {
+    color: #b5b5b5 !important;
+}
+
+body.dark-mode hr {
+    border-color: #333;
+}
+
+body.dark-mode .card {
+    background: #1e1e1e;
+    color: #f1f1f1;
+    border: 1px solid #2a2a2a;
+}
+
+body.dark-mode .card-text,
+body.dark-mode .text-muted {
+    color: #b5b5b5 !important;
+}
+
+body.dark-mode .badge.bg-dark {
+    background: #333 !important;
+}
+
+.exhibition-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.featured .exhibition-image {
+    height: 260px;
+}
+
+.upcoming-image {
+    width: 160px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 12px;
+    flex-shrink: 0;
+}
+
+body.dark-mode .exhibition-card,
+body.dark-mode .upcoming-exhibition {
+    background: #1e1e1e;
+    color: #f1f1f1;
+    border: 1px solid #2a2a2a;
+}
+
+body.dark-mode .text-muted {
+    color: #b5b5b5 !important;
+}

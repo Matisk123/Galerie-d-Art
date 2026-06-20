@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Oeuvre;
 use App\Models\User;
+use App\Models\Exposition;
 use Illuminate\Support\Facades\Auth;
 
 class MenuController extends Controller
@@ -36,11 +37,22 @@ class MenuController extends Controller
             ->limit(4)
             ->get();
 
+        $expoDuMois = Exposition::whereDate('date_debut', '<=', now())
+            ->whereDate('date_fin', '>=', now())
+            ->latest()
+            ->first();
+
+        $expositionsActives = Exposition::whereDate('date_debut', '<=', now())
+            ->whereDate('date_fin', '>=', now())
+            ->count();
+
         return view('menus.client', compact(
             'oeuvresCount',
             'artistesCount',
             'oeuvresPopulaires',
-            'artistesPopulaires'
+            'artistesPopulaires',
+            'expoDuMois',
+            'expositionsActives'
         ));
     }
 }

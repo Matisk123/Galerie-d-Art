@@ -57,7 +57,7 @@
 
             <div class="col-md-4">
                 <div class="home-card stat-card">
-                    <h3>12</h3>
+                    <h3>{{ $expositionsActives }}</h3>
                     <p>Expositions actives</p>
                 </div>
             </div>
@@ -176,28 +176,26 @@
         {{-- EXPOSITIONS --}}
         <div class="section-header mt-5">
             <h2>Expositions</h2>
-            <a href="/expositions">Voir tout</a>
+            <a href="{{ route('expositions') }}">Voir tout</a>
         </div>
 
         <div class="home-card exhibition-banner">
 
             <div>
-
-            <span class="exhibition-label">
-                Exposition du mois
-            </span>
+                <span class="exhibition-label">
+                    Exposition du mois
+                </span>
 
                 <h3>
-                    Lumières Urbaines
+                    {{ $expoDuMois?->titre ?? 'Aucune exposition en cours' }}
                 </h3>
 
                 <p>
-                    Une immersion dans l’art moderne inspiré des villes contemporaines.
+                    {{ $expoDuMois?->description ?? 'Aucune description disponible' }}
                 </p>
-
             </div>
 
-            <a href="/expositions" class="btn btn-light">
+            <a href="{{ route('expositions') }}" class="btn btn-light">
                 Découvrir
             </a>
 

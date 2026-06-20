@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\OeuvreController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\StatsController;
+use App\Http\Controllers\ExpositionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -66,15 +67,10 @@ Route::middleware(['auth', 'role:admin,super_admin'])->group(function () {
 
 Route::get('/oeuvres', [OeuvreController::class, 'publicIndex'])->name('oeuvres');
 
-Route::get('/oeuvres/{oeuvre}', [OeuvreController::class, 'showPublic'])->name('oeuvres.show');
-
 Route::get('/peintures', [OeuvreController::class, 'peintures'])->name('peintures');
 
 Route::get('/artistes', [OeuvreController::class, 'artistes'])->name('artistes');
 
-Route::get('/expositions', function () {
-    return view('expositions.index');
-});
 
 Route::middleware('auth')->group(function () {
 
@@ -90,6 +86,24 @@ Route::middleware(['auth', 'role:admin,super_admin'])->group(function () {
 
     Route::get('/admin/statistiques', [StatsController::class, 'index'])
         ->name('admin.stats');
+    Route::get('/admin/expositions', [ExpositionController::class, 'index'])
+        ->name('admin.expositions');
+
+    Route::get('/admin/expositions/create', [ExpositionController::class, 'create'])
+        ->name('admin.expositions.create');
+
+    Route::post('/admin/expositions', [ExpositionController::class, 'store'])
+        ->name('admin.expositions.store');
+
+    Route::get('/admin/expositions/{exposition}/edit', [ExpositionController::class, 'edit'])
+        ->name('admin.expositions.edit');
+
+    Route::put('/admin/expositions/{exposition}', [ExpositionController::class, 'update'])
+        ->name('admin.expositions.update');
+
+    Route::delete('/admin/expositions/{exposition}', [ExpositionController::class, 'destroy'])
+        ->name('admin.expositions.destroy');
+
 });
 
 Route::get('/oeuvres/search/suggestions', [OeuvreController::class, 'searchSuggestions'])
@@ -110,3 +124,12 @@ Route::get('/artistes/{user}/oeuvres', [OeuvreController::class, 'oeuvresByArtis
 
 Route::get('/artistes/{user}', [OeuvreController::class, 'oeuvresByArtist'])
     ->name('artistes.show');
+
+Route::get('/expositions', [ExpositionController::class, 'publicIndex'])
+    ->name('expositions');
+
+Route::get('/expositions/passees', [ExpositionController::class, 'pastExpositions'])
+    ->name('expositions.past');
+
+Route::get('/expositions/{exposition}', [ExpositionController::class, 'show'])
+    ->name('expositions.show');
